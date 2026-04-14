@@ -26,7 +26,7 @@ Nota: Si al hacer Push da un error, el 99% de las veces es porque alguien más s
 
 -En NetBeans, ir al menú superior y seleccionar Team (Equipo) > Git > Clone... (Clonar...).
 
--En Repository URL, deben pegar el enlace de tu repositorio (ej. https://github.com/tuUsuario/tuProyecto.git).
+-En Repository URL, deben pegar el enlace de tu repositorio (https://github.com/vicenteespadas3/Proyecto-Intermodular-Grupo-B.git).
 
 -En Username, ponen su propio usuario de GitHub.
 
