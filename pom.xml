@@ -8,6 +8,13 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>25</maven.compiler.release>
-        <exec.mainClass>grupob.gestiontaller.grupob.GestionTallerGrupoB</exec.mainClass>
+        <exec.mainClass>grupob.gestiontaller.grupob.Main</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>3.3.3</version> 
+        </dependency>
+    </dependencies>
 </project>
