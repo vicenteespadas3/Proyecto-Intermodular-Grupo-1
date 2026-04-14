@@ -8,7 +8,7 @@ package grupob.gestiontaller.grupob;
  *
  * @author Eric
  */
-public class GestionTallerGrupoB {
+public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
