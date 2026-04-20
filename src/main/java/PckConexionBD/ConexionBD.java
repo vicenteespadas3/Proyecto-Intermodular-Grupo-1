@@ -27,18 +27,18 @@ public class ConexionBD {
     }
     
     public static void main(String[] args) {
-        System.out.println("⏳ Intentando conectar a la base de datos...");
+        System.out.println("Intentando conectar a la base de datos...");
         Connection pruebaConexion = ConexionBD.getConnection();
         
         if (pruebaConexion != null) {
-            System.out.println("✅ ¡ÉXITO! Conexión a MySQL establecida correctamente.");
+            System.out.println("¡ÉXITO! Conexión a MySQL establecida correctamente.");
             try {
                 pruebaConexion.close(); // Cerramos la conexión de prueba
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("❌ Fallo en la conexión. Revisa los datos de URL, USUARIO o PASSWORD.");
+            System.out.println("Fallo en la conexión. Revisa los datos de URL, USUARIO o PASSWORD.");
         }
     }
     

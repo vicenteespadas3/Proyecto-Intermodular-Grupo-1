@@ -1,6 +1,6 @@
 package DAOG5;
 
-import ModeloG5.GamaMantenimiento;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +11,7 @@ import java.util.List;
 // Importamos todas las clases modelo necesarias
 import ModeloG5.PlanMantenimiento;
 //import modelo.Maquina;
-import modelo.GamaMantenimiento;
+import ModeloG5.GamaMantenimiento;
 //import modelo.Definicion;
 import PckConexionBD.ConexionBD;
 
@@ -76,7 +76,6 @@ public class PlanMantenimientoDAO {
                 // Finalmente, añadimos el plan completamente armado a la lista
                 lista.add(plan);
                 
-                System.out.println(plan.toString());
             }
         } catch (SQLException e) {
             System.err.println("Error al obtener los planes: " + e.getMessage());

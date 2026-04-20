@@ -135,7 +135,7 @@ public PlanMantenimiento(Integer horasIntervalo, Integer duracionEstimada, boole
     // --- 6. TOSTRING ---
     @Override
         public String toString() {
-            String nombreGama = (gama != null) ? gama.getNombre() : "Sin gama";
+            String nombreGama = (gama != null) ? "ID " + gama.getIdGama() : "Sin gama";
             return "Plan [" + idPlan + "] - ID Máquina: " + idMaquina + 
                    " | Gama: " + nombreGama + 
                    " | Tareas: " + tareas.size();
