@@ -1,4 +1,4 @@
-package dao;
+package DAOG5;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Importamos todas las clases modelo necesarias
-import modelo.PlanMantenimiento;
-import modelo.Maquina;
+import ModeloG5.PlanMantenimiento;
+//import modelo.Maquina;
 import modelo.GamaMantenimiento;
-import modelo.Definicion;
+//import modelo.Definicion;
 import PckConexionBD.ConexionBD;
 
 public class PlanMantenimientoDAO {
@@ -44,31 +44,41 @@ public class PlanMantenimientoDAO {
                 }
                 
 
-                // 2. Construimos la Máquina y se la asignamos al plan
+                /* 2. Construimos la Máquina y se la asignamos al plan
                 Maquina maquina = new Maquina();
                 maquina.setIdMaquina(rs.getInt("id_maquina"));
                 plan.setMaquina(maquina);
+                */
 
                 // 3. Construimos la Gama y se la asignamos al plan
                 GamaMantenimiento gama = new GamaMantenimiento();
                 gama.setIdGama(rs.getInt("id_gama"));
                 plan.setGama(gama);
 
-                // 4. Construimos la Frecuencia (Definicion) y se la asignamos
+                /* 4. Construimos la Frecuencia (Definicion) y se la asignamos
                 Definicion frecuencia = new Definicion();
                 frecuencia.setIdDefinicion(rs.getInt("id_frecuencia"));
                 plan.setFrecuencia(frecuencia);
-
-                // 5. Construimos la Dificultad (Definicion) y se la asignamos
+                */
+                
+                /* 5. Construimos la Dificultad (Definicion) y se la asignamos
                 Definicion dificultad = new Definicion();
                 dificultad.setIdDefinicion(rs.getInt("id_dificultad"));
                 plan.setDificultad(dificultad);
+                */
+                
+                // 3.Clases Aisladas temporalmente
+                plan.setIdMaquina(rs.getInt("id_maquina"));
+                plan.setIdFrecuencia(rs.getInt("id_frecuencia"));
+                plan.setIdDificultad(rs.getInt("id_dificultad"));
                 
                 // Finalmente, añadimos el plan completamente armado a la lista
                 lista.add(plan);
+                
+                System.out.println(plan.toString());
             }
         } catch (SQLException e) {
-            System.err.println("❌ Error al obtener los planes: " + e.getMessage());
+            System.err.println("Error al obtener los planes: " + e.getMessage());
         }
         return lista;
     }
@@ -81,11 +91,11 @@ public class PlanMantenimientoDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
             
             // OJO AQUÍ: Para sacar el ID que va a la BBDD, tenemos que "entrar" al objeto primero
-            ps.setInt(1, plan.getMaquina().getIdMaquina());
+            ps.setInt(1, plan.getIdMaquina());
             ps.setInt(2, plan.getGama().getIdGama());
-            ps.setInt(3, plan.getFrecuencia().getIdDefinicion());
+            ps.setInt(3, plan.getIdFrecuencia());
             ps.setObject(4, plan.getHorasIntervalo());
-            ps.setInt(5, plan.getDificultad().getIdDefinicion());
+            ps.setInt(5, plan.getIdDificultad());
             ps.setObject(6, plan.getDuracionEstimada());
             ps.setBoolean(7, plan.isActivo());
             
@@ -93,7 +103,7 @@ public class PlanMantenimientoDAO {
             return filasAfectadas > 0;
             
         } catch (SQLException e) {
-            System.err.println("❌ Error al insertar el plan: " + e.getMessage());
+            System.err.println("Error al insertar el plan: " + e.getMessage());
             return false;
         }
     }

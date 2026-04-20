@@ -1,4 +1,4 @@
-package modelo;
+package ModeloG5;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,11 +13,16 @@ public class PlanMantenimiento {
     private boolean activo;
     private LocalDateTime fechaCreacion;
 
-    // --- 2. Claves Foraneas ---
+/* --- CÓDIGO FUTURO  ---
     private Maquina maquina;
-    private GamaMantenimiento gama;
     private Definicion frecuencia;
     private Definicion dificultad;
+    */
+    
+    private GamaMantenimiento gama;
+    private int idMaquina;
+    private int idFrecuencia;
+    private int idDificultad;
     
     //--- Lista de las tareas ---
     private List<TareaMantenimiento> tareas; 
@@ -29,15 +34,15 @@ public class PlanMantenimiento {
         this.tareas = new ArrayList<>();
     }
 
-    public PlanMantenimiento(Maquina maquina, GamaMantenimiento gama, Definicion frecuencia, 
-                             Integer horasIntervalo, Definicion dificultad, Integer duracionEstimada, boolean activo) {
-        this.maquina = maquina;
-        this.gama = gama;
-        this.frecuencia = frecuencia;
+public PlanMantenimiento(Integer horasIntervalo, Integer duracionEstimada, boolean activo, 
+                             GamaMantenimiento gama, int idMaquina, int idFrecuencia, int idDificultad) {
         this.horasIntervalo = horasIntervalo;
-        this.dificultad = dificultad;
         this.duracionEstimada = duracionEstimada;
         this.activo = activo;
+        this.gama = gama;
+        this.idMaquina = idMaquina;
+        this.idFrecuencia = idFrecuencia;
+        this.idDificultad = idDificultad;
         this.tareas = new ArrayList<>();
     }
 
@@ -45,6 +50,9 @@ public class PlanMantenimiento {
     //Borramos setID ya que lo crea la BBDD automatica
     public int getIdPlan() { 
         return idPlan; 
+    }
+    public void setIdPlan(int idPlan) { 
+        this.idPlan = idPlan; 
     }
     
     public Integer getHorasIntervalo() { 
@@ -76,33 +84,34 @@ public class PlanMantenimiento {
     }
 
     // Getters y Setters de los Objetos
-    public Maquina getMaquina() { 
-        return maquina; 
+    public int getIdMaquina() { 
+        return idMaquina; 
     }
-    public void setMaquina(Maquina maquina) { 
-        this.maquina = maquina; 
+    public void setIdMaquina(int idMaquina) { 
+        this.idMaquina = idMaquina; 
     }
 
+    public int getIdFrecuencia() { 
+        return idFrecuencia; 
+    }
+    public void setIdFrecuencia(int idFrecuencia) { 
+        this.idFrecuencia = idFrecuencia; 
+    }
+
+    public int getIdDificultad() { 
+        return idDificultad; 
+    }
+    public void setIdDificultad(int idDificultad) { 
+        this.idDificultad = idDificultad; 
+    }
+    
     public GamaMantenimiento getGama() { 
         return gama; 
     }
     public void setGama(GamaMantenimiento gama) { 
         this.gama = gama; 
     }
-
-    public Definicion getFrecuencia() { 
-        return frecuencia; 
-    }
-    public void setFrecuencia(Definicion frecuencia) { 
-        this.frecuencia = frecuencia; 
-    }
-
-    public Definicion getDificultad() { 
-        return dificultad; 
-    }
-    public void setDificultad(Definicion dificultad) { 
-        this.dificultad = dificultad; 
-    }
+    
 
     public List<TareaMantenimiento> getTareas() { 
         return tareas; 
@@ -110,25 +119,25 @@ public class PlanMantenimiento {
     public void setTareas(List<TareaMantenimiento> tareas) { 
         this.tareas = tareas; 
     }
-
-    // --- 5. MÉTODOS DE AYUDA (Para gestionar la lista de tareas fácilmente) ---
-    public void addTarea(TareaMantenimiento tarea) {
-        this.tareas.add(tarea);
+    
+    
+    // Métodos para tu lista de tareas
+    public void addTarea(TareaMantenimiento tarea) { 
+        this.tareas.add(tarea); 
+    }
+    public void removeTarea(TareaMantenimiento tarea) { 
+        this.tareas.remove(tarea); 
     }
 
-    public void removeTarea(TareaMantenimiento tarea) {
-        this.tareas.remove(tarea);
-    }
+
+
 
     // --- 6. TOSTRING ---
     @Override
-    public String toString() {
-        // Al imprimir, usamos los métodos de los otros objetos para mostrar sus nombres
-        String nombreMaquina = (maquina != null) ? maquina.getNombre() : "Sin máquina";
-        String nombreGama = (gama != null) ? gama.getNombre() : "Sin gama";
-        
-        return "Plan [" + idPlan + "] - Máquina: " + nombreMaquina + 
-               " | Gama: " + nombreGama + 
-               " | Tareas asignadas: " + tareas.size();
-    }
+        public String toString() {
+            String nombreGama = (gama != null) ? gama.getNombre() : "Sin gama";
+            return "Plan [" + idPlan + "] - ID Máquina: " + idMaquina + 
+                   " | Gama: " + nombreGama + 
+                   " | Tareas: " + tareas.size();
+        }
 }
