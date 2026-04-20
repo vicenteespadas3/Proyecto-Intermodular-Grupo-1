@@ -33,7 +33,16 @@ public class PlanMantenimientoDAO {
                 plan.setHorasIntervalo((Integer) rs.getObject("horas_intervalo")); 
                 plan.setDuracionEstimada((Integer) rs.getObject("duracion_estimada"));
                 plan.setActivo(rs.getBoolean("activo"));
-               
+                
+                // --- NUEVO: Extraer la fecha ---
+                // 1. Sacamos la fecha de SQL como un "Timestamp"
+                java.sql.Timestamp fechaSQL = rs.getTimestamp("fecha_creacion");
+                
+                // 2. Si la fecha no es nula, la convertimos al LocalDateTime de Java
+                if (fechaSQL != null) {
+                    plan.setFechaCreacion(fechaSQL.toLocalDateTime());
+                }
+                
 
                 // 2. Construimos la Máquina y se la asignamos al plan
                 Maquina maquina = new Maquina();
