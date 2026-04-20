@@ -16,8 +16,12 @@ import PckConexionBD.ConexionBD;
  */
 
 public class EjecucionMantenimientoDAO {
+    
+    //esta clase guarda el reporte final del tecnico en
+    //la base de datos
 
     public List<EjecucionMantenimiento> obtenerTodos() {
+        //
         List<EjecucionMantenimiento> lista = new ArrayList<>();
         String sql = "SELECT * FROM ejecuciones_mantenimiento";
 
@@ -53,6 +57,7 @@ public class EjecucionMantenimientoDAO {
     }
 
     public boolean insertar(EjecucionMantenimiento ejec) {
+        //
         String sql = "INSERT INTO ejecuciones_mantenimiento (id_orden, fecha_ejecucion, hora_inicio, hora_fin, id_tecnico, observaciones, resultado) VALUES (?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection con = ConexionBD.getConnection();

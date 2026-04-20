@@ -13,6 +13,11 @@ import java.time.LocalTime;
  */
 
 public class EjecucionMantenimiento {
+    
+    //esta clase registra cuando se hizo el trabajo,
+    //quien lo hizo (id tecnico) y que tal fue (resultado)
+    
+    //creacion de las variables
     private int idEjecucion;
     private int idOrden;        // Referencia a tu otra tabla
     private int idTecnico;      // Solo el ID del usuario

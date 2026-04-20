@@ -16,8 +16,12 @@ import PckConexionBD.ConexionBD;
  */
 
 public class TareaEjecutadaDAO {
+    
+    //esta clase graba el estado de cada tarea del plan
+    //de mantenimiento
 
     public List<TareaEjecutada> obtenerTodos() {
+        //
         List<TareaEjecutada> lista = new ArrayList<>();
         String sql = "SELECT * FROM tareas_ejecutadas";
 
@@ -44,6 +48,7 @@ public class TareaEjecutadaDAO {
     }
 
     public boolean insertar(TareaEjecutada tarea) {
+        //
         String sql = "INSERT INTO tareas_ejecutadas (id_ejecucion, id_tarea, completada, observaciones, tiempo_empleado) VALUES (?, ?, ?, ?, ?)";
         
         try (Connection con = ConexionBD.getConnection();

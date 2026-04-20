@@ -13,6 +13,11 @@ import java.time.LocalDateTime;
  */
 
 public class OrdenTrabajo {
+    
+    //esta clase guarda toda la informacion de un
+    //trabajo pendiente o realizado
+    
+    //creacion de las variables
     private int idOrden;
     private int idMaquina;      // Solo el número, no el objeto
     private Integer idPlan;     // Integer para que pueda ser null

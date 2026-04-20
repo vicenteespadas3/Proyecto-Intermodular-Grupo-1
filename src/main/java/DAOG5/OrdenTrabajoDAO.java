@@ -16,8 +16,15 @@ import PckConexionBD.ConexionBD;
  */
 
 public class OrdenTrabajoDAO {
+    
+    //esta clase gestiona el ciclo de vida de las ordenes
+    //(crearlas y listarlas)
 
     public boolean insertar(OrdenTrabajo ot) {
+        //guarda una ficha nueva en la base de datos
+        
+        //recibe un objeto, lo trocea en datos sueltos
+        //y los manda a los "?" de la tabla
         String sql = "INSERT INTO ordenes_trabajo (id_maquina, id_plan, id_tipo, id_estado, id_prioridad, id_rol_asignado, fecha_programada, tiempo_estimado, observaciones) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection con = ConexionBD.getConnection();
@@ -42,6 +49,11 @@ public class OrdenTrabajoDAO {
     
     // Método para listar que solo rellena los IDs numéricos
     public List<OrdenTrabajo> obtenerTodas() {
+        //trae toda la lista de ordenes que ya estan
+        //guardadas para que se vean en la app
+        
+        //mira la tabla, lee los datos de las columnas
+        //y los empaqueta en Objetos y los mete en una lista
         List<OrdenTrabajo> lista = new ArrayList<>();
         String sql = "SELECT * FROM ordenes_trabajo";
         try (Connection con = ConexionBD.getConnection();

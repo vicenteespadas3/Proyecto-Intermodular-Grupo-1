@@ -10,6 +10,11 @@ package ModeloG5;
  */
 
 public class TareaEjecutada {
+    
+    //esta clase indica si una tarea concreta de la
+    //lista se ha completado o no
+    
+    //creacion de las variables
     private int idTareaEjecutada;
     private int idEjecucion;    // Referencia a tu otra tabla
     private int idTarea;        // Solo el ID de la tarea
