@@ -5,11 +5,16 @@
 package ModeloG1;
 
 /**
- * Clase que representa un Proveedor del taller.
+ * Clase de entidad (Modelo) que representa un Proveedor del taller.
+ * Esta clase mapea la estructura de la tabla 'proveedores' de la base de datos
+ * convirtiendo sus registros en objetos manejables en Java.
  * @author Vicente
  */
 public class Proveedor {
     
+    // --- Atributos ---
+    // Se declaran como 'private' para cumplir con el principio de Encapsulamiento,
+    // protegiendo los datos para que solo puedan modificarse mediante sus métodos Setters.
     private int idProveedor;
     private String cif;
     private String nombre;
@@ -17,7 +22,14 @@ public class Proveedor {
     private String emailContacto;
 
     /**
-     * Constructor para recuperar datos de la BD.
+     * Constructor completo.
+     * Se utiliza principalmente desde el ProveedorDAO para instanciar objetos 
+     * con los datos que ya existen y se han recuperado de la base de datos.
+     * * @param idProveedor Identificador único (Clave Primaria).
+     * @param cif Código de Identificación Fiscal.
+     * @param nombre Nombre de la empresa proveedora.
+     * @param telefono Teléfono de contacto.
+     * @param emailContacto Correo electrónico del proveedor.
      */
     public Proveedor(int idProveedor, String cif, String nombre, String telefono, String emailContacto) {
         this.idProveedor = idProveedor;
@@ -28,7 +40,9 @@ public class Proveedor {
     }
 
     /**
-     * Constructor para crear nuevos proveedores.
+     * Constructor sobrecargado sin el ID.
+     * Se utiliza desde la Interfaz Gráfica cuando un usuario va a dar de alta
+     * un proveedor nuevo. Como el ID es Auto-Incremental en la BD, no lo conocemos aún.
      */
     public Proveedor(String cif, String nombre, String telefono, String emailContacto) {
         this.cif = cif;
@@ -37,7 +51,9 @@ public class Proveedor {
         this.emailContacto = emailContacto;
     }
 
-    // Getters y Setters
+    // --- Getters y Setters ---
+    // Métodos de acceso público para interactuar con los atributos privados.
+    
     public int getIdProveedor() {
         return idProveedor;
     }
@@ -58,6 +74,8 @@ public class Proveedor {
         return emailContacto; 
     }
 
+    // Nota: Solo creamos setters para los campos que tiene sentido modificar 
+    // en la vida real. Un CIF o un ID no deberían cambiar, pero el teléfono sí.
     public void setTelefono(String telefono) { 
         this.telefono = telefono;
     }
@@ -66,7 +84,12 @@ public class Proveedor {
         this.emailContacto = emailContacto;
     }
     
-
+    /**
+     * Sobrescribimos el método toString() heredado de la clase Object.
+     * Es de gran utilidad para que, si metemos el objeto en un ComboBox o Lista visual (JavaFX/Swing),
+     * el usuario lea texto comprensible y no la dirección de memoria del objeto.
+     * * @return Una cadena formateada con el nombre y el CIF.
+     */
     @Override
     public String toString() {
         return nombre + " (" + cif + ")";
