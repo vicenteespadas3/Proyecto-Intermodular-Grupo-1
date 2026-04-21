@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package DAOG5;
+package DAOG5FueraDeUso;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import ModeloG5.EjecucionMantenimiento;
+import ModeloG5FueraDeUso.EjecucionMantenimiento;
 import PckConexionBD.ConexionBD;
 
 /**

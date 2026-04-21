@@ -1,4 +1,4 @@
-package DAOG5;
+package DAOG5FueraDeUso;
 
 
 import java.sql.Connection;
@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Importamos todas las clases modelo necesarias
-import ModeloG5.PlanMantenimiento;
-//import modelo.Maquina;
-import ModeloG5.GamaMantenimiento;
+import ModeloG5FueraDeUso.PlanMantenimiento;
+import ModeloG5FueraDeUso.GamaMantenimiento;
 //import modelo.Definicion;
 import PckConexionBD.ConexionBD;
 

@@ -2,14 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package DAOG1;
+package DAO;
 
 // Importaciones necesarias para manejar la base de datos (JDBC) y las estructuras de datos (Listas)
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import PckConexionBD.ConexionBD;
-import ModeloG1.Maquina;
+import Modelo.Maquina;
 
 /**
  * Clase DAO (Data Access Object) para gestionar la persistencia de las máquinas.

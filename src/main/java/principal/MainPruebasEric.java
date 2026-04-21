@@ -1,12 +1,12 @@
 package principal; 
 
-import DAOG5.GamaMantenimientoDAO;
-import DAOG5.PlanMantenimientoDAO;
-import DAOG5.TareaMantenimientoDAO;
+import DAOG5FueraDeUso.GamaMantenimientoDAO;
+import DAOG5FueraDeUso.PlanMantenimientoDAO;
+import DAOG5FueraDeUso.TareaMantenimientoDAO;
 
-import ModeloG5.GamaMantenimiento;
-import ModeloG5.PlanMantenimiento;
-import ModeloG5.TareaMantenimiento;
+import ModeloG5FueraDeUso.GamaMantenimiento;
+import ModeloG5FueraDeUso.PlanMantenimiento;
+import ModeloG5FueraDeUso.TareaMantenimiento;
 
 import java.util.List;
 
