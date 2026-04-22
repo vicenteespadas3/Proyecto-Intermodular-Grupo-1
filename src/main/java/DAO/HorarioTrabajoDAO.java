@@ -11,13 +11,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
-
 import Modelo.HorarioTrabajo;
 
 
 /**
+ * <h2>Clase HorarioTrabajoDAO</h2>
  * Clase DAO para gestionar la persistencia de los horarios de trabajo.
- * Proporciona métodos para realizar operaciones CRUD en la tabla 'horario_trabajo'.
+ * Proporciona metodos para realizar operaciones CRUD sobre los turnos de 
+ * los trabajadores en la base de datos.
+ * * @see Modelo.HorarioTrabajo
+ * @author Guadalupe M.G.M
+ * @version 0.0.1
  */
 public class HorarioTrabajoDAO {
 

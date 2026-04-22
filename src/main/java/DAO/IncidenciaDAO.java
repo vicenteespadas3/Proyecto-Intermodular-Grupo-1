@@ -11,8 +11,13 @@ import PckConexionBD.ConexionBD;
 import Modelo.Incidencia;
 
 /**
- * Clase DAO para gestionar la persistencia de las incidencias.
+ * <h2>Clase IncidenciaDAO</h2>
+ * Clase DAO para gestionar la persistencia de las incidencias o averias.
+ * Proporciona metodos para registrar problemas y asignar tecnicos (usuarios) 
+ * actualizando el estado en la base de datos.
+ * * @see Modelo.Incidencia
  * @author Vicente
+ * @version 0.0.1
  */
 public class IncidenciaDAO {
 

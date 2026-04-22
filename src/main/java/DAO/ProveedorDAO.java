@@ -12,10 +12,11 @@ import PckConexionBD.ConexionBD;
 import Modelo.Proveedor;
 
 /**
- * Clase DAO (Data Access Object) para gestionar la persistencia de los proveedores.
- * Se encarga de aislar la lógica de acceso a la base de datos (tabla 'proveedores') 
- * del resto de la aplicación, siguiendo el patrón de diseño DAO.
- * * @author Vicente
+ * <h2>Clase ProveedorDAO</h2>
+ * Centraliza las operaciones de acceso a datos (CRUD) para la entidad Proveedor.
+ * * @see Modelo.Proveedor
+ * @author Vicente
+ * @version 0.0.1
  */
 public class ProveedorDAO {
 

@@ -11,10 +11,13 @@ package Modelo;
 import java.time.LocalDateTime;
 
 /**
- * Clase de entidad (POJO) que representa una averia o incidencia tecnica en el taller.
- * Esta clase sirve como puente entre el modulo de Activos (Vicente) y el de Usuarios (Guadalupe),
- * permitiendo registrar fallos en maquinas y asignarlos a tecnicos especificos.
- * * @author Vicente
+ * <h2>Clase Incidencia</h2>
+ * Representa una avería o problema reportado en una máquina.
+ * Sirve como puente de integración funcional entre el módulo de Activos 
+ * y el módulo de Recursos Humanos (asignación de técnicos).
+ * * @see DAO.IncidenciaDAO
+ * @author Vicente
+ * @version 0.0.1
  */
 public class Incidencia {
     

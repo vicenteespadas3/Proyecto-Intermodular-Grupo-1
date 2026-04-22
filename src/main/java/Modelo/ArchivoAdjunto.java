@@ -5,10 +5,13 @@
 package Modelo;
 
 /**
- * Clase de entidad (Modelo/POJO) que representa un documento técnico o imagen.
- * Sirve para mapear los registros de la tabla 'archivos_adjuntos' y manejarlos 
- * de forma orientada a objetos en Java.
+ * <h2>Clase ArchivoAdjunto</h2>
+ * Representa un documento técnico, manual o imagen.
+ * Se encarga de gestionar las rutas físicas de los ficheros vinculados
+ * a la maquinaria pesada del taller.
+ * * @see DAO.ArchivoAdjuntoDAO
  * @author Vicente
+ * @version 0.0.1
  */
 public class ArchivoAdjunto {
     

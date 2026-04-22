@@ -10,7 +10,7 @@ import java.sql.Connection;
  * Clase encargada de ser la intermediaria entre el modelo(TareasHerramientas) y la base de datos.
  * Gestiona la relación entre tareas de mantenimiento y herramientas utilizadas.
  * 
- * @see TareasHerramientas
+ * @see Modelo.TareasHerramientas
  * @author Miguel Ángel Sánchez Martínez
  * @version 0.0.1
  */

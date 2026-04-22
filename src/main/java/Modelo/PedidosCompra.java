@@ -15,8 +15,8 @@ import java.util.Objects;
  * vinculado correctamente con la clase 'Proveedor' de Vicente y la clase 'Definiciones' 
  * para el estado del pedido. Sin estos cambios, el proyecto no compilaba por tipos 
  * de datos incompatibles.
- * * @author Miguel Angel / Corregido por Vicente (Tech Lead)
- * @version 1.0.1
+ * * @author Miguel Angel
+ * @version 0.0.1
  */
 public class PedidosCompra {
 

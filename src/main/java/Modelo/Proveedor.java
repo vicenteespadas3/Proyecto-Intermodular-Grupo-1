@@ -5,10 +5,13 @@
 package Modelo;
 
 /**
- * Clase de entidad (Modelo) que representa un Proveedor del taller.
- * Esta clase mapea la estructura de la tabla 'proveedores' de la base de datos
- * convirtiendo sus registros en objetos manejables en Java.
+ * <h2>Clase Proveedor</h2>
+ * Representa la entidad de un proveedor o suministrador del taller.
+ * Esta clase mapea la estructura de la base de datos y es fundamental 
+ * para el módulo de compras y aprovisionamiento.
+ * * @see DAO.ProveedorDAO
  * @author Vicente
+ * @version 0.0.1
  */
 public class Proveedor {
     

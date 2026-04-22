@@ -14,7 +14,7 @@ import java.util.Objects;
  * <ul>
  *  <li></li>
  * </ul>
- * @see TareasHerramientasDAO
+ * @see DAO.TareasHerramientasDAO
  * @author Miguel Ángel Sánchez Martínez
  * @version 0.0.1
  */
