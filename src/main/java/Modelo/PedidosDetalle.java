@@ -1,7 +1,7 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+ 
 package Modelo;
 
 import java.util.Objects;
@@ -73,39 +73,75 @@ public class PedidosDetalle {
     //Métodos Públicos
     
     //Getters
+    /**
+     * Obtiene el ID del detalle del pedido.
+     * @return ID del detalle.
+     */
     public int getId_detalle() {
         return id_detalle;
     }
 
+    /**
+     * Obtiene el pedido asociado.
+     * @return Objeto PedidosCompra.
+     */
     public PedidosCompra getPedido() {
         return pedido;
     }
 
+    /**
+     * Obtiene la pieza de repuesto.
+     * @return Objeto PiezasRepuesto.
+     */
     public PiezasRepuesto getPieza() {
         return pieza;
     }
 
+    /**
+     * Obtiene la cantidad solicitada.
+     * @return Cantidad solicitada.
+     */
     public int getCantidad_solicitada() {
         return cantidad_solicitada;
     }
 
+    /**
+     * Obtiene la cantidad recibida.
+     * @return Cantidad recibida.
+     */
     public int getCantidad_recibida() {
         return cantidad_recibida;
     }
 
+    /**
+     * Obtiene el precio unitario.
+     * @return Precio unitario.
+     */
     public double getPrecio_unitario() {
         return precio_unitario;
     }
     
     //Setters
+    /**
+     * Establece la cantidad solicitada.
+     * @param cantidad_solicitada Cantidad solicitada.
+     */
     public void setCantidad_solicitada(int cantidad_solicitada) {
         this.cantidad_solicitada = cantidad_solicitada;
     }
 
+    /**
+     * Establece la cantidad recibida.
+     * @param cantidad_recibida Cantidad recibida.
+     */
     public void setCantidad_recibida(int cantidad_recibida) {
         this.cantidad_recibida = cantidad_recibida;
     }
 
+    /**
+     * Establece el precio unitario.
+     * @param precio_unitario Precio unitario.
+     */
     public void setPrecio_unitario(double precio_unitario) {
         this.precio_unitario = precio_unitario;
     }

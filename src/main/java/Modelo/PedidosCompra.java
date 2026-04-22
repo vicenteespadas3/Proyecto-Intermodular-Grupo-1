@@ -1,7 +1,7 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+ 
 package Modelo;
 
 import java.util.Objects;
@@ -76,51 +76,99 @@ public class PedidosCompra {
     //Métodos Públicos
     
     //Getters
+    /**
+     * Obtiene el ID del pedido.
+     * @return ID del pedido.
+     */
     public int getId_pedido() {
         return id_pedido;
     }
 
+    /**
+     * Obtiene la fecha del pedido.
+     * @return Fecha del pedido.
+     */
     public DateTime getFecha_pedido() {
         return fecha_pedido;
     }
 
+    /**
+     * Obtiene el proveedor asociado al pedido.
+     * @return Proveedor del pedido.
+     */
     public ProveedoresMaquinas getProveedor() {
         return proveedor;
     }
 
+    /**
+     * Obtiene el estado del pedido.
+     * @return Estado del pedido.
+     */
     public Definiciones getEstado() {
         return estado;
     }
 
+    /**
+     * Obtiene la fecha de entrega esperada.
+     * @return Fecha de entrega esperada.
+     */
     public LocalDate getFecha_entrega_esperada() {
         return fecha_entrega_esperada;
     }
 
+    /**
+     * Obtiene la fecha de entrega real.
+     * @return Fecha de entrega real.
+     */
     public LocalDate getFecha_entrega_real() {
         return fecha_entrega_real;
     }
 
+    /**
+     * Obtiene las observaciones del pedido.
+     * @return Observaciones.
+     */
     public String getObservaciones() {
         return observaciones;
     }
     
     //Setters
+    /**
+     * Establece el proveedor del pedido.
+     * @param proveedor Proveedor asociado.
+     */
     public void setProveedor(ProveedoresMaquinas proveedor) {
         this.proveedor = proveedor;
     }
 
+    /**
+     * Establece el estado del pedido.
+     * @param estado Estado del pedido.
+     */
     public void setEstado(Definiciones estado) {
         this.estado = estado;
     }
 
+    /**
+     * Establece la fecha de entrega esperada.
+     * @param fecha_entrega_esperada Fecha de entrega esperada.
+     */
     public void setFecha_entrega_esperada(LocalDate fecha_entrega_esperada) {
         this.fecha_entrega_esperada = fecha_entrega_esperada;
     }
 
+    /**
+     * Establece la fecha de entrega real.
+     * @param fecha_entrega_real Fecha de entrega real.
+     */
     public void setFecha_entrega_real(LocalDate fecha_entrega_real) {
         this.fecha_entrega_real = fecha_entrega_real;
     }
 
+    /**
+     * Establece las observaciones del pedido.
+     * @param observaciones Observaciones.
+     */
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }

@@ -10,8 +10,19 @@ import ModeloG5FueraDeUso.TareaMantenimiento;
 
 import java.util.List;
 
+/**
+ * Clase de prueba para verificar el correcto funcionamiento de las lecturas
+ * de gamas, planes y tareas de mantenimiento desde la base de datos.
+ * 
+ * @author Eric
+ */
 public class MainPruebasEric {
 
+    /**
+     * Punto de entrada principal para la ejecución de las pruebas de lectura.
+     * 
+     * @param args Argumentos de la línea de comandos.
+     */
     public static void main(String[] args) {
         
         System.out.println("==================================================");

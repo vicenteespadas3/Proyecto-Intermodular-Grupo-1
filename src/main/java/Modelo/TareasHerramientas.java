@@ -1,7 +1,7 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+ 
 package Modelo;
 
 import java.util.Objects;
@@ -48,22 +48,42 @@ public class TareasHerramientas {
     }
     
     //Getters
+    /**
+     * Obtiene el ID de la relación tarea-herramienta.
+     * @return ID de la relación.
+     */
     public int getId_tareas_herramientas() {
         return id_tareas_herramientas;
     }
 
+    /**
+     * Obtiene la herramienta utilizada.
+     * @return Objeto Herramientas.
+     */
     public Herramientas getHerramienta() {
         return herramienta;
     }
 
+    /**
+     * Obtiene la cantidad de herramientas utilizadas.
+     * @return Cantidad.
+     */
     public int getCantidad() {
         return cantidad;
     }
     //Setters
+    /**
+     * Establece la herramienta utilizada.
+     * @param herramienta Objeto Herramientas.
+     */
     public void setHerramienta(Herramientas herramienta) {
         this.herramienta = herramienta;
     }
 
+    /**
+     * Establece la cantidad de herramientas utilizadas.
+     * @param cantidad Cantidad.
+     */
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }

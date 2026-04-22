@@ -44,22 +44,42 @@ public class ArchivoAdjunto {
     // --- Getters ---
     // Métodos de acceso para leer la información del archivo desde otras clases.
     
+    /**
+     * Obtiene el identificador único del archivo.
+     * @return ID del archivo.
+     */
     public int getIdArchivo() {
         return idArchivo;
     }
     
+    /**
+     * Obtiene el nombre del archivo.
+     * @return Nombre del archivo.
+     */
     public String getNombre() { 
         return nombre; 
     }
     
+    /**
+     * Obtiene la ruta de almacenamiento del archivo.
+     * @return Ruta del archivo.
+     */
     public String getRuta() { 
         return ruta; 
     }
     
+    /**
+     * Obtiene el tipo o extensión del archivo.
+     * @return Tipo de archivo.
+     */
     public String getTipo() { 
         return tipo;
     }
     
+    /**
+     * Obtiene el ID de la máquina asociada al archivo.
+     * @return ID de la máquina.
+     */
     public int getIdMaquina() { 
         return idMaquina;
     }

@@ -10,10 +10,18 @@ import java.util.ArrayList;
 import Modelo.Usuario;
 
 
+/**
+ * Clase DAO para gestionar la persistencia de los usuarios.
+ * Proporciona métodos para realizar operaciones CRUD en la tabla 'usuarios'.
+ */
 public class UsuarioDAO {
 
     private Connection con;
 
+    /**
+     * Constructor que recibe una conexión a la base de datos.
+     * @param con Conexión activa.
+     */
     public UsuarioDAO(Connection con) {
         this.con = con;
     }
@@ -21,6 +29,10 @@ public class UsuarioDAO {
     // =========================
     // CREATE
     // =========================
+    /**
+     * Inserta un nuevo usuario en la base de datos.
+     * @param u Objeto Usuario con los datos a insertar.
+     */
     public void insertar(Usuario u) {
 
         String sql = "INSERT INTO usuarios (nombre, email, rol) VALUES (?, ?, ?)";
@@ -41,6 +53,10 @@ public class UsuarioDAO {
     // =========================
     // READ
     // =========================
+    /**
+     * Recupera todos los usuarios registrados.
+     * @return Lista de objetos Usuario.
+     */
     public ArrayList<Usuario> listar() {
 
         ArrayList<Usuario> lista = new ArrayList<>();
@@ -70,6 +86,10 @@ public class UsuarioDAO {
     // =========================
     // UPDATE
     // =========================
+    /**
+     * Actualiza los datos de un usuario existente.
+     * @param u Objeto Usuario con los datos actualizados.
+     */
     public void actualizar(Usuario u) {
 
         String sql = "UPDATE usuarios SET nombre=?, email=?, rol=? WHERE idUsuario=?";
@@ -91,6 +111,10 @@ public class UsuarioDAO {
     // =========================
     // DELETE
     // =========================
+    /**
+     * Elimina un usuario por su ID.
+     * @param idUsuario ID del usuario a eliminar.
+     */
     public void eliminar(int idUsuario) {
 
         String sql = "DELETE FROM usuarios WHERE idUsuario=?";

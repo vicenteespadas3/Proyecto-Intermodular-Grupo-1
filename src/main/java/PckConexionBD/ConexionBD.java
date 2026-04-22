@@ -3,6 +3,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Clase encargada de gestionar la conexión con la base de datos MySQL.
+ * Proporciona un método estático para obtener una instancia de Connection.
+ * 
+ * @author Vicente
+ */
 public class ConexionBD {
 
     // 1. Datos de conexión a tu base de datos local
@@ -11,7 +17,11 @@ public class ConexionBD {
     private static final String USUARIO = "admin"; // Cambia esto si tu usuario en clase es distinto
     private static final String PASSWORD = "123456";    // Cambia esto si tienes contraseña en tu MySQL local
 
-    // 2. Método estático que tus compañeros llamarán desde sus DAOs
+    /**
+     * Establece y devuelve una conexión a la base de datos.
+     * 
+     * @return Connection objeto de conexión SQL, o null si falla.
+     */
     public static Connection getConnection() {
         Connection conexion = null;
         try {
@@ -26,6 +36,11 @@ public class ConexionBD {
         return conexion;
     }
     
+    /**
+     * Método principal para probar la conexión a la base de datos.
+     * 
+     * @param args Argumentos de la línea de comandos.
+     */
     public static void main(String[] args) {
         System.out.println("Intentando conectar a la base de datos...");
         Connection pruebaConexion = ConexionBD.getConnection();

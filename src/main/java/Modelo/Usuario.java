@@ -15,8 +15,19 @@ public class Usuario {
     private String email;
     private String rol;
 
+    /**
+     * Constructor por defecto.
+     */
     public Usuario() {}
 
+    /**
+     * Constructor con todos los parámetros.
+     * 
+     * @param idUsuario Identificador único del usuario.
+     * @param nombre Nombre del usuario.
+     * @param email Correo electrónico del usuario.
+     * @param rol Rol del usuario en el sistema.
+     */
     public Usuario(int idUsuario, String nombre, String email, String rol) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
@@ -51,28 +62,49 @@ public class Usuario {
     // GETTERS Y SETTERS
     // =========================
 
+    /**
+     * Obtiene el ID del usuario.
+     * @return ID del usuario.
+     */
     public int getIdUsuario() {
         return idUsuario;
     }
 
+    /**
+     * Establece el ID del usuario.
+     * @param idUsuario ID del usuario.
+     */
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 
+    /**
+     * Obtiene el nombre del usuario.
+     * @return Nombre del usuario.
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Establece el nombre del usuario.
+     * @param nombre Nombre del usuario.
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * Obtiene el email del usuario.
+     * @return Email del usuario.
+     */
     public String getEmail() {
         return email;
     }
 
     /**
      * Establece el email solo si contiene formato válido básico.
+     * @param email Correo electrónico.
      */
     public void setEmail(String email) {
         if (email != null && email.contains("@")) {
@@ -80,10 +112,18 @@ public class Usuario {
         }
     }
 
+    /**
+     * Obtiene el rol del usuario.
+     * @return Rol del usuario.
+     */
     public String getRol() {
         return rol;
     }
 
+    /**
+     * Establece el rol del usuario.
+     * @param rol Rol del usuario.
+     */
     public void setRol(String rol) {
         this.rol = rol;
     }

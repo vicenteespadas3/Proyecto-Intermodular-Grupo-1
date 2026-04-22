@@ -22,7 +22,7 @@ public class ProveedorDAO {
     /**
      * Inserta un nuevo proveedor en la base de datos.
      * Utiliza consultas parametrizadas para evitar vulnerabilidades de Inyección SQL.
-     * * @param p El objeto Proveedor con los datos que queremos insertar.
+     * @param p El objeto Proveedor con los datos que queremos insertar.
      * @return true si la inserción fue correcta (1 o más filas afectadas), false en caso de error.
      */
     public boolean insertar(Proveedor p) {
@@ -55,7 +55,7 @@ public class ProveedorDAO {
     /**
      * Recupera todos los proveedores registrados en la base de datos.
      * Convierte cada registro (fila) de la tabla en un objeto de la clase Proveedor.
-     * * @return Una lista (List) de objetos Proveedor. Si no hay datos, devuelve una lista vacía.
+     * @return Una lista (List) de objetos Proveedor. Si no hay datos, devuelve una lista vacía.
      */
     public List<Proveedor> listarTodos() {
         // Instanciamos la lista donde almacenaremos los resultados

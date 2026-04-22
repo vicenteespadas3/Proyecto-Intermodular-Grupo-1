@@ -57,30 +57,58 @@ public class Maquina {
     // --- Getters ---
     // Permiten la lectura de los datos de la máquina desde otras partes de la aplicación.
     
+    /**
+     * Obtiene el identificador único de la máquina.
+     * @return ID de la máquina.
+     */
     public int getIdMaquina() { 
         return idMaquina;
     }
     
+    /**
+     * Obtiene el número de serie de la máquina.
+     * @return Número de serie.
+     */
     public String getNumeroSerie() { 
         return numeroSerie;
     }
     
+    /**
+     * Obtiene la marca de la máquina.
+     * @return Marca de la máquina.
+     */
     public String getMarca() { 
         return marca; 
     }
     
+    /**
+     * Obtiene el modelo de la máquina.
+     * @return Modelo de la máquina.
+     */
     public String getModelo() { 
         return modelo; 
     }
     
+    /**
+     * Obtiene el identificador del estado de la máquina.
+     * @return ID del estado.
+     */
     public int getIdEstado() { 
         return idEstado; 
     }
     
+    /**
+     * Obtiene la fecha de adquisición de la máquina.
+     * @return Fecha de adquisición.
+     */
     public Date getFechaAdquisicion() { 
         return fechaAdquisicion;
     }
         
+    /**
+     * Obtiene la lista de archivos adjuntos vinculados a la máquina.
+     * @return Lista de archivos adjuntos.
+     */
     public List<ArchivoAdjunto> getListaArchivos() { 
         return listaArchivos; 
     }

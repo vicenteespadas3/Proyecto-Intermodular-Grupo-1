@@ -21,7 +21,7 @@ public class MaquinaDAO {
 
     /**
      * Inserta un nuevo registro de máquina en la base de datos.
-     * * @param m Objeto de tipo Maquina que contiene los datos a guardar.
+     * @param m Objeto de tipo Maquina que contiene los datos a guardar.
      * @return true si la inserción fue exitosa (se afectó 1 fila), false si hubo algún error.
      */
     public boolean insertar(Maquina m) {
@@ -55,7 +55,7 @@ public class MaquinaDAO {
     /**
      * Crea una relación entre una máquina y un proveedor en la tabla intermedia.
      * Esto resuelve la relación de Muchos a Muchos (N:M) de la base de datos.
-     * * @param idMaquina El identificador único de la máquina.
+     * @param idMaquina El identificador único de la máquina.
      * @param idProveedor El identificador único del proveedor.
      */
     public void vincularProveedor(int idMaquina, int idProveedor) {
@@ -79,7 +79,7 @@ public class MaquinaDAO {
 
     /**
      * Recupera todos los registros de la tabla 'maquinas' y los convierte en objetos Java.
-     * * @return Una lista (List) que contiene todos los objetos Maquina encontrados en la BD.
+     * @return Una lista (List) que contiene todos los objetos Maquina encontrados en la BD.
      */
     public List<Maquina> listarTodas() {
         // Inicializamos una lista vacía donde iremos guardando las máquinas que encontremos

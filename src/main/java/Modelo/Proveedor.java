@@ -43,6 +43,11 @@ public class Proveedor {
      * Constructor sobrecargado sin el ID.
      * Se utiliza desde la Interfaz Gráfica cuando un usuario va a dar de alta
      * un proveedor nuevo. Como el ID es Auto-Incremental en la BD, no lo conocemos aún.
+     * 
+     * @param cif Código de Identificación Fiscal.
+     * @param nombre Nombre de la empresa proveedora.
+     * @param telefono Teléfono de contacto.
+     * @param emailContacto Correo electrónico del proveedor.
      */
     public Proveedor(String cif, String nombre, String telefono, String emailContacto) {
         this.cif = cif;
@@ -54,32 +59,60 @@ public class Proveedor {
     // --- Getters y Setters ---
     // Métodos de acceso público para interactuar con los atributos privados.
     
+    /**
+     * Obtiene el ID del proveedor.
+     * @return ID del proveedor.
+     */
     public int getIdProveedor() {
         return idProveedor;
     }
     
+    /**
+     * Obtiene el CIF del proveedor.
+     * @return CIF del proveedor.
+     */
     public String getCif() {
         return cif; 
     }
     
+    /**
+     * Obtiene el nombre del proveedor.
+     * @return Nombre del proveedor.
+     */
     public String getNombre() { 
         return nombre; 
     }
     
+    /**
+     * Obtiene el teléfono del proveedor.
+     * @return Teléfono del proveedor.
+     */
     public String getTelefono() {
         return telefono; 
     }
     
+    /**
+     * Obtiene el email de contacto del proveedor.
+     * @return Email de contacto.
+     */
     public String getEmailContacto() { 
         return emailContacto; 
     }
 
     // Nota: Solo creamos setters para los campos que tiene sentido modificar 
     // en la vida real. Un CIF o un ID no deberían cambiar, pero el teléfono sí.
+    /**
+     * Establece el teléfono del proveedor.
+     * @param telefono Nuevo teléfono.
+     */
     public void setTelefono(String telefono) { 
         this.telefono = telefono;
     }
     
+    /**
+     * Establece el email de contacto del proveedor.
+     * @param emailContacto Nuevo email.
+     */
     public void setEmailContacto(String emailContacto) { 
         this.emailContacto = emailContacto;
     }
