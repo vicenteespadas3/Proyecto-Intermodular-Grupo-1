@@ -37,7 +37,7 @@ public class PedidosCompra {
     /**
      * Es un objeto simple de la clase ProveedoresMaquinas y no puede ser nulo
      */
-    private ProveedoresMaquinas proveedor;
+    private Proveedor roveedor;
     /**
      * Es un objeto simple de la clase Definiciones y no puede ser nulo
      */
