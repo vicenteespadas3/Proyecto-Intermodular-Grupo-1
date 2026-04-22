@@ -4,7 +4,12 @@ package DAO;
  * @author Guadalupe M.G.M
  */
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 
 import Modelo.HorarioTrabajo;
@@ -61,7 +66,7 @@ public class HorarioTrabajoDAO {
         String sql = "SELECT * FROM horario_trabajo";
 
         try (Statement st = con.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+            ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
 
