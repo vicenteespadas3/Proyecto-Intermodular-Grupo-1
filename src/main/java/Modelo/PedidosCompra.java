@@ -4,242 +4,146 @@
  */
 package Modelo;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
  * <h2>Clase PedidosCompra</h2>
- * Representa los pedidos de compra del sistema
- * Esta clase se relaciona con la tabla pedidos_compra de la base de datos
- * Tiene los siguientes atributos:
- * <ul>
- *  <li>id_pedido</li>
- *  <li>fecha_pedido</li>
- *  <li>proveedor</li>
- *  <li>estado</li>
- *  <li>fecha_entrega_esperada</li>
- *  <li>fecha_entrega_real</li>
- *  <li>observaciones</li>
- * </ul>
- * @see PedidosCompraDAO
- * @author Miguel Ángel Sánchez Martínez
- * @version 0.0.1
+ * <b>¿Por que se ha modificado/arreglado?</b><br>
+ * Esta clase representa la cabecera de un pedido de compra al proveedor.
+ * Se han corregido los tipos de datos de fecha (de DateTime a LocalDateTime) y se ha 
+ * vinculado correctamente con la clase 'Proveedor' de Vicente y la clase 'Definiciones' 
+ * para el estado del pedido. Sin estos cambios, el proyecto no compilaba por tipos 
+ * de datos incompatibles.
+ * * @author Miguel Angel / Corregido por Vicente (Tech Lead)
+ * @version 1.0.1
  */
 public class PedidosCompra {
-    //Atributos
-    /**
-     * Es la ID de esta clase y no puede ser nulo
-     */
-    private int id_pedido = 0;
-    /**
-     * Es la fecha del pedido y no puede ser nulo
-     */
-    private DateTime fecha_pedido;
-    /**
-     * Es un objeto simple de la clase ProveedoresMaquinas y no puede ser nulo
-     */
-    private Proveedor roveedor;
-    /**
-     * Es un objeto simple de la clase Definiciones y no puede ser nulo
-     */
-    private Definiciones estado;
-    /**
-     * Es la fecha esperada en la que entregan el pedido
-     */
-    private LocalDate fecha_entrega_esperada;
-    /**
-     * Es la fecha de entrega real del pedido
-     */
-    private LocalDate fecha_entrega_real;
-    /**
-     * Aquí se añaden las observaciones del pedido o al pedido
-     */
-    private String observaciones = "";
+
+    // --- Atributos ---
     
-    //Constructores
+    /** Identificador unico del pedido (Auto-incremental en BD). */
+    private int id_pedido;
+    
+    /** Fecha y hora en la que se realiza el pedido. */
+    private LocalDateTime fecha_pedido;
+    
+    /** Objeto Proveedor al que se le realiza la compra (Modulo de Vicente). */
+    private Proveedor proveedor;
+    
+    /** Objeto que define el estado actual (ej: Pendiente, Recibido, Cancelado). */
+    private Definiciones estado;
+    
+    /** Fecha en la que el proveedor estima la entrega. */
+    private LocalDateTime fecha_entrega_esperada;
+    
+    /** Fecha real en la que el pedido entro en el almacen del taller. */
+    private LocalDateTime fecha_entrega_real;
+    
+    /** Notas adicionales sobre el pedido. */
+    private String observaciones;
+
+    // --- Constructores ---
+
     /**
-     * Constructor por defecto
-     * Crea una instancia de la clase PedidosCompra
-     * @param fecha_pedido
-     * @param proveedor
-     * @param estado
-     * @param fecha_entrega_esperada
-     * @param fecha_entrega_real 
+     * Constructor vacio por defecto (Requisito POJO).
      */
-    public PedidosCompra(DateTime fecha_pedido, ProveedoresMaquinas proveedor, Definiciones estado, LocalDate fecha_entrega_esperada, LocalDate fecha_entrega_real) {
+    public PedidosCompra() {
+    }
+
+    /**
+     * Constructor completo para instanciar pedidos desde el DAO.
+     */
+    public PedidosCompra(int id_pedido, LocalDateTime fecha_pedido, Proveedor proveedor, 
+                         Definiciones estado, LocalDateTime fecha_entrega_esperada, 
+                         LocalDateTime fecha_entrega_real, String observaciones) {
+        this.id_pedido = id_pedido;
         this.fecha_pedido = fecha_pedido;
         this.proveedor = proveedor;
         this.estado = estado;
         this.fecha_entrega_esperada = fecha_entrega_esperada;
         this.fecha_entrega_real = fecha_entrega_real;
+        this.observaciones = observaciones;
     }
-    
-    //Métodos Públicos
-    
-    //Getters
-    /**
-     * Obtiene el ID del pedido.
-     * @return ID del pedido.
-     */
+
+    // --- Metodos Getter y Setter ---
+
     public int getId_pedido() {
         return id_pedido;
     }
 
-    /**
-     * Obtiene la fecha del pedido.
-     * @return Fecha del pedido.
-     */
-    public DateTime getFecha_pedido() {
+    public void setId_pedido(int id_pedido) {
+        this.id_pedido = id_pedido;
+    }
+
+    public LocalDateTime getFecha_pedido() {
         return fecha_pedido;
     }
 
-    /**
-     * Obtiene el proveedor asociado al pedido.
-     * @return Proveedor del pedido.
-     */
-    public ProveedoresMaquinas getProveedor() {
+    public void setFecha_pedido(LocalDateTime fecha_pedido) {
+        this.fecha_pedido = fecha_pedido;
+    }
+
+    public Proveedor getProveedor() {
         return proveedor;
     }
 
-    /**
-     * Obtiene el estado del pedido.
-     * @return Estado del pedido.
-     */
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+    }
+
     public Definiciones getEstado() {
         return estado;
     }
 
-    /**
-     * Obtiene la fecha de entrega esperada.
-     * @return Fecha de entrega esperada.
-     */
-    public LocalDate getFecha_entrega_esperada() {
-        return fecha_entrega_esperada;
-    }
-
-    /**
-     * Obtiene la fecha de entrega real.
-     * @return Fecha de entrega real.
-     */
-    public LocalDate getFecha_entrega_real() {
-        return fecha_entrega_real;
-    }
-
-    /**
-     * Obtiene las observaciones del pedido.
-     * @return Observaciones.
-     */
-    public String getObservaciones() {
-        return observaciones;
-    }
-    
-    //Setters
-    /**
-     * Establece el proveedor del pedido.
-     * @param proveedor Proveedor asociado.
-     */
-    public void setProveedor(ProveedoresMaquinas proveedor) {
-        this.proveedor = proveedor;
-    }
-
-    /**
-     * Establece el estado del pedido.
-     * @param estado Estado del pedido.
-     */
     public void setEstado(Definiciones estado) {
         this.estado = estado;
     }
 
-    /**
-     * Establece la fecha de entrega esperada.
-     * @param fecha_entrega_esperada Fecha de entrega esperada.
-     */
-    public void setFecha_entrega_esperada(LocalDate fecha_entrega_esperada) {
+    public LocalDateTime getFecha_entrega_esperada() {
+        return fecha_entrega_esperada;
+    }
+
+    public void setFecha_entrega_esperada(LocalDateTime fecha_entrega_esperada) {
         this.fecha_entrega_esperada = fecha_entrega_esperada;
     }
 
-    /**
-     * Establece la fecha de entrega real.
-     * @param fecha_entrega_real Fecha de entrega real.
-     */
-    public void setFecha_entrega_real(LocalDate fecha_entrega_real) {
+    public LocalDateTime getFecha_entrega_real() {
+        return fecha_entrega_real;
+    }
+
+    public void setFecha_entrega_real(LocalDateTime fecha_entrega_real) {
         this.fecha_entrega_real = fecha_entrega_real;
     }
 
-    /**
-     * Establece las observaciones del pedido.
-     * @param observaciones Observaciones.
-     */
+    public String getObservaciones() {
+        return observaciones;
+    }
+
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
-    
-    //toString
-    /**
-     * Devuelve una representación en cadena del pedido
-     * Incluye la ID, la fecha, proveedor, estado, fecha entrega esperada y real e observaciones
-     * @return String con todos los atributos del objeto/clase
-     */
+
+    // --- Metodos Sobrescritos ---
+
     @Override
     public String toString() {
-        return "PedidosCompra{" + "id_pedido=" + id_pedido + ", fecha_pedido=" + fecha_pedido + ", proveedor=" + proveedor + ", estado=" + estado + ", fecha_entrega_esperada=" + fecha_entrega_esperada + ", fecha_entrega_real=" + fecha_entrega_real + ", observaciones=" + observaciones + '}';
+        String nombreProv = (proveedor != null) ? proveedor.getNombre() : "Sin proveedor";
+        String nombreEstado = (estado != null) ? estado.getNombre() : "Sin estado";
+        
+        return "Pedido #" + id_pedido + " [" + nombreProv + "] - Estado: " + nombreEstado;
     }
-    //equals y hashCode
-    /**
-     * Genera un código hash sobre la clase PedidosCompra
-     * Es indispensable mantener la consistencia con {@link #equals(Object)}
-     * @return código hash del objeto
-     */
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + this.id_pedido;
-        hash = 79 * hash + Objects.hashCode(this.fecha_pedido);
-        hash = 79 * hash + Objects.hashCode(this.proveedor);
-        hash = 79 * hash + Objects.hashCode(this.estado);
-        hash = 79 * hash + Objects.hashCode(this.fecha_entrega_esperada);
-        hash = 79 * hash + Objects.hashCode(this.fecha_entrega_real);
-        hash = 79 * hash + Objects.hashCode(this.observaciones);
-        return hash;
-    }
-    /**
-     * Compara este objeto con otro objeto para verificar igualdad
-     * Dos usuarios se consideran iguales si y solo si comparten el mismo ID único
-     * @param obj El objeto a comparar
-     * @return true si los IDs coinciden; false en caso contrario
-     */
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final PedidosCompra other = (PedidosCompra) obj;
-        if (this.id_pedido != other.id_pedido) {
-            return false;
-        }
-        if (!Objects.equals(this.observaciones, other.observaciones)) {
-            return false;
-        }
-        if (!Objects.equals(this.fecha_pedido, other.fecha_pedido)) {
-            return false;
-        }
-        if (!Objects.equals(this.proveedor, other.proveedor)) {
-            return false;
-        }
-        if (!Objects.equals(this.estado, other.estado)) {
-            return false;
-        }
-        if (!Objects.equals(this.fecha_entrega_esperada, other.fecha_entrega_esperada)) {
-            return false;
-        }
-        return Objects.equals(this.fecha_entrega_real, other.fecha_entrega_real);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        PedidosCompra other = (PedidosCompra) obj;
+        return id_pedido == other.id_pedido;
     }
-    
-    //Métodos Privados
-    
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id_pedido);
+    }
 }
