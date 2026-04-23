@@ -10,7 +10,7 @@ import java.util.Date;
  * <h2>Clase ArchivoAdjunto</h2>
  * Representa un documento, manual de instrucciones, certificado de garantía 
  * o imagen fotográfica vinculada a una máquina específica del taller.
- * * @author Equipo 1
+ * * @author Vicente
  * @version 0.0.1
  */
 public class ArchivoAdjunto {

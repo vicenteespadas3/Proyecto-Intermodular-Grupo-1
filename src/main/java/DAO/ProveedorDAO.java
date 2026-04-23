@@ -15,7 +15,7 @@ import PckConexionBD.ConexionBD;
  * Centraliza las operaciones CRUD (Crear, Leer, Actualizar, Borrar) para la tabla 'proveedores_maquinas'.
  * Incluye un sistema de recuperación en RAM y constructores de inyección de dependencias 
  * para garantizar la compatibilidad con el módulo de Compras de Miguel Ángel.
- * * @author Equipo 1
+ * * @author Vicente
  * @version 0.0.1
  */
 public class ProveedorDAO {

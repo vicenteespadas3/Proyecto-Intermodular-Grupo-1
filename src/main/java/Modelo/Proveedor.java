@@ -9,7 +9,7 @@ package Modelo;
  * Representa la entidad de un proveedor, empresa o persona física que suministra
  * maquinaria, activos o piezas de repuesto al taller.
  * Esta clase mapea de forma exacta la estructura de la tabla 'proveedores_maquinas' de MySQL.
- * * @author Equipo 1
+ * * @author Vicente
  * @version 0.0.1
  */
 public class Proveedor {

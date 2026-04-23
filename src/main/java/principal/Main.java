@@ -74,12 +74,14 @@ public class Main {
 
     /**
      * Despliega el menú principal del módulo de Activos.
-     * Mantiene vivos los DAOs durante la sesión para asegurar que la caché en RAM no se destruya.
+     * Instancia todos los DAOs necesarios al inicio para asegurar que la caché 
+     * en RAM no se destruya mientras el usuario navega entre submenús.
      */
     private static void menuVicente() {
         MaquinaDAO mDao = new MaquinaDAO();
         ProveedorDAO pDao = new ProveedorDAO();
         IncidenciaDAO iDao = new IncidenciaDAO();
+        ArchivoAdjuntoDAO aDao = new ArchivoAdjuntoDAO();
         boolean volver = false;
 
         while (!volver) {
@@ -87,6 +89,7 @@ public class Main {
             System.out.println("1. Gestionar Máquinas");
             System.out.println("2. Gestionar Proveedores");
             System.out.println("3. Registro de Incidencias");
+            System.out.println("4. Gestión Documental (Archivos Adjuntos)");
             System.out.println("0. Volver al Menú Principal");
             System.out.print("Selección: ");
 
@@ -101,9 +104,14 @@ public class Main {
                 case "3":
                     menuGestionIncidencias(iDao, mDao);
                     break;
+                case "4":
+                    menuGestionArchivos(aDao, mDao);
+                    break;
                 case "0":
                     volver = true;
                     break;
+                default:
+                    System.out.println("Opción no válida.");
             }
         }
     }
@@ -153,7 +161,8 @@ public class Main {
         boolean volver = false;
         while (!volver) {
             System.out.println("\n--- GESTIÓN DE PROVEEDORES ---");
-            System.out.println("1. Listar | 2. Añadir Prueba | 0. Volver");
+            dao.verEstadoPapelera();
+            System.out.println("1. Listar | 2. Añadir Prueba | 3. Borrar | 4. Deshacer | 0. Volver");
             System.out.print("Opción: ");
             String op = scanner.nextLine();
             switch (op) {
@@ -162,6 +171,17 @@ public class Main {
                     break;
                 case "2":
                     dao.insertar(new Proveedor("Suministros SL", "Paco", "600000000", "paco@mail.com", "Dir 1"));
+                    break;
+                case "3":
+                    System.out.print("ID a eliminar: ");
+                    try {
+                        dao.eliminarConRespaldo(Integer.parseInt(scanner.nextLine()));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Por favor, introduce un número válido.");
+                    }
+                    break;
+                case "4":
+                    dao.restaurarUltimoBorrado();
                     break;
                 case "0":
                     volver = true;
@@ -180,7 +200,7 @@ public class Main {
         while (!volver) {
             System.out.println("\n--- REGISTRO DE INCIDENCIAS ---");
             iDao.verEstadoPapelera();
-            System.out.println("1. Ver Incidencias | 2. Reportar Fallo (ID 1) | 3. Deshacer | 0. Volver");
+            System.out.println("1. Ver Incidencias | 2. Reportar Fallo (ID 1) | 3. Borrar | 4. Deshacer | 0. Volver");
             System.out.print("Opción: ");
             String op = scanner.nextLine();
             switch (op) {
@@ -197,7 +217,59 @@ public class Main {
                     }
                     break;
                 case "3":
+                    System.out.print("ID a eliminar: ");
+                    try {
+                        iDao.eliminarConRespaldo(Integer.parseInt(scanner.nextLine()));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Por favor, introduce un número válido.");
+                    }
+                    break;
+                case "4":
                     iDao.restaurarUltimo();
+                    break;
+                case "0":
+                    volver = true;
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Submenú para gestionar los documentos, manuales e imágenes de la maquinaria.
+     * @param aDao Instancia de ArchivoAdjuntoDAO para la persistencia.
+     * @param mDao Instancia de MaquinaDAO requerida para vincular el documento a un activo real.
+     */
+    private static void menuGestionArchivos(ArchivoAdjuntoDAO aDao, MaquinaDAO mDao) {
+        boolean volver = false;
+        while (!volver) {
+            System.out.println("\n--- GESTIÓN DOCUMENTAL (ARCHIVOS ADJUNTOS) ---");
+            aDao.verEstadoPapelera();
+            System.out.println("1. Listar Documentos | 2. Subir Manual (Prueba ID 1) | 3. Borrar | 4. Deshacer | 0. Volver");
+            System.out.print("Opción: ");
+            String op = scanner.nextLine();
+            switch (op) {
+                case "1":
+                    aDao.listarTodos().forEach(System.out::println);
+                    break;
+                case "2":
+                    Maquina m = mDao.buscarPorId(1);
+                    if (m != null) {
+                        aDao.insertar(new ArchivoAdjunto(m, "manual_instrucciones", "pdf", "C:/docs/manual.pdf", new Date()));
+                        System.out.println("[OK] Documento adjuntado a la máquina.");
+                    } else {
+                        System.out.println("[ERROR] No existe la máquina con ID 1. Créala primero.");
+                    }
+                    break;
+                case "3":
+                    System.out.print("ID del documento a eliminar: ");
+                    try {
+                        aDao.eliminarConRespaldo(Integer.parseInt(scanner.nextLine()));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Por favor, introduce un número válido.");
+                    }
+                    break;
+                case "4":
+                    aDao.restaurarUltimo();
                     break;
                 case "0":
                     volver = true;

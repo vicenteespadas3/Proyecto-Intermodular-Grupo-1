@@ -16,7 +16,7 @@ import PckConexionBD.ConexionBD;
  * Gestiona la persistencia (CRUD) de los documentos y manuales del taller.
  * Implementa un sistema de papelera en memoria RAM (Caché) para evitar 
  * la pérdida accidental de archivos importantes.
- * * @author Equipo 1
+ * * @author Vicente
  * @version 0.0.1
  */
 public class ArchivoAdjuntoDAO {
