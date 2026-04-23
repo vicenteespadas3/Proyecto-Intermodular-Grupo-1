@@ -4,7 +4,6 @@
  */
 package DAO;
 
-// Importaciones necesarias para operaciones de base de datos y manejo de listas
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +12,9 @@ import Modelo.Proveedor;
 
 /**
  * <h2>Clase ProveedorDAO</h2>
- * Centraliza las operaciones de acceso a datos (CRUD) para la entidad
- * Proveedor.
- * * @see Modelo.Proveedor
- * 
+ * Centraliza las operaciones de acceso a datos (CRUD) para la entidad Proveedor.
+ * Adaptada a la estructura final de la tabla 'proveedores_maquinas'.
+ * @see Modelo.Proveedor
  * @author Vicente
  * @version 0.0.1
  */
@@ -26,88 +24,50 @@ public class ProveedorDAO {
     public ProveedorDAO(Connection con) {
         this.con = con;
     }
+    
+    // Constructor vacío arreglado (sin excepciones)
+    public ProveedorDAO() {
+        this.con = ConexionBD.getConnection();
+    }
 
-    /**
-     * Inserta un nuevo proveedor en la base de datos.
-     * Utiliza consultas parametrizadas para evitar vulnerabilidades de Inyección
-     * SQL.
-     * 
-     * @param p El objeto Proveedor con los datos que queremos insertar.
-     * @return true si la inserción fue correcta (1 o más filas afectadas), false en
-     *         caso de error.
-     */
     public boolean insertar(Proveedor p) {
-        // Preparamos la consulta SQL con '?' como marcadores de posición para los
-        // valores.
-        // No pasamos el ID porque la base de datos lo genera automáticamente (Auto
-        // Incremental).
-        String sql = "INSERT INTO proveedores (cif, nombre, telefono, email_contacto) VALUES (?, ?, ?, ?)";
-
-        // Bloque try-with-resources: asegura que la conexión y el PreparedStatement
-        // se cierren automáticamente al terminar, evitando fugas de memoria (memory
-        // leaks).
-        try (Connection conn = ConexionBD.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            // Sustituimos los marcadores '?' por los valores reales del objeto Proveedor
-            pstmt.setString(1, p.getCif());
-            pstmt.setString(2, p.getNombre());
+        // Apuntamos a la tabla correcta y con los campos correctos de tu imagen
+        String sql = "INSERT INTO proveedores_maquinas (nombre, contacto, telefono, email, direccion) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, p.getNombre());
+            pstmt.setString(2, p.getContacto());
             pstmt.setString(3, p.getTelefono());
-            pstmt.setString(4, p.getEmailContacto());
-
-            // Ejecutamos la consulta. Si executeUpdate() devuelve > 0, significa que
-            // la fila se ha guardado correctamente en la tabla.
+            pstmt.setString(4, p.getEmail());
+            pstmt.setString(5, p.getDireccion());
             return pstmt.executeUpdate() > 0;
-
         } catch (SQLException e) {
-            // Si hay un error (ej. CIF duplicado o base de datos apagada), lo capturamos
             System.err.println("Error al insertar proveedor: " + e.getMessage());
             return false;
         }
     }
 
-    /**
-     * Recupera todos los proveedores registrados en la base de datos.
-     * Convierte cada registro (fila) de la tabla en un objeto de la clase
-     * Proveedor.
-     * 
-     * @return Una lista (List) de objetos Proveedor. Si no hay datos, devuelve una
-     *         lista vacía.
-     */
     public List<Proveedor> listarTodos() {
-        // Instanciamos la lista donde almacenaremos los resultados
         List<Proveedor> listaProveedores = new ArrayList<>();
+        // Apuntamos a la tabla correcta
+        String sql = "SELECT * FROM proveedores_maquinas";
 
-        // Consulta SQL básica para obtener todas las columnas de todos los proveedores
-        String sql = "SELECT * FROM proveedores";
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) { 
 
-        // Usamos try-with-resources anidando la creación del Statement y la ejecución
-        // del ResultSet
-        try (Connection conn = ConexionBD.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) { // El ResultSet contiene la "tabla" devuelta por la BD
-
-            // Recorremos el ResultSet iterando fila por fila mientras existan resultados
             while (rs.next()) {
-                // Instanciamos un nuevo objeto Proveedor mapeando las columnas de la BD a los
-                // atributos de la clase
                 Proveedor p = new Proveedor(
                         rs.getInt("id_proveedor"),
-                        rs.getString("cif"),
                         rs.getString("nombre"),
+                        rs.getString("contacto"),
                         rs.getString("telefono"),
-                        rs.getString("email_contacto"));
-
-                // Añadimos el proveedor recién mapeado a nuestra lista
+                        rs.getString("email"),
+                        rs.getString("direccion")
+                );
                 listaProveedores.add(p);
             }
-
         } catch (SQLException e) {
-            // Capturamos cualquier error de lectura o conexión
             System.err.println("Error al listar proveedores: " + e.getMessage());
         }
-
-        // Retornamos la lista final (lista con datos o vacía si falló)
         return listaProveedores;
     }
 
@@ -119,13 +79,13 @@ public class ProveedorDAO {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new Proveedor(
+                    proveedor = new Proveedor(
                             rs.getInt("id_proveedor"),
-                            rs.getString("nombre"), // Coincide
-                            rs.getString("contacto"), // Antes tenías "dni", cámbialo a "contacto"
-                            rs.getString("telefono"), // Coincide
-                            rs.getString("email"), // Coincide
-                            rs.getString("direccion") // Añadido (según tu imagen)
+                            rs.getString("nombre"),
+                            rs.getString("contacto"),
+                            rs.getString("telefono"),
+                            rs.getString("email"),
+                            rs.getString("direccion")
                     );
                 }
             }

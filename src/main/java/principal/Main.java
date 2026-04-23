@@ -6,22 +6,18 @@ package principal;
 import java.sql.Connection;
 import java.util.Scanner;
 
-// Importamos la conexión central
 import PckConexionBD.ConexionBD;
-
-// DAOs de Vicente
 import DAO.MaquinaDAO;
 import DAO.ProveedorDAO;
-
-// DAOs de Guadalupe
 import DAO.UsuarioDAO;
-
-// DAOs de Miguel Ángel
 import DAO.PedidosCompraDAO;
 
 /**
+ * <h2>Clase Main</h2>
  * Clase principal que actúa como menú de entrada para el ERP del Taller.
  * Integra los módulos de Vicente, Guadalupe y Miguel Ángel.
+ * @author Equipo 1
+ * @version 0.0.1
  */
 public class Main {
 
@@ -29,20 +25,17 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         boolean salir = false;
 
-        // 1. Iniciamos la conexión global.
-        // Necesaria porque Guadalupe y Miguel Ángel la piden por parámetro en sus constructores.
         System.out.println("Iniciando sistema y verificando conexion a la base de datos...");
         Connection conexionGlobal = ConexionBD.getConnection();
 
         if (conexionGlobal == null) {
             System.out.println("[ERROR CRITICO] No se pudo conectar a la base de datos.");
             System.out.println("Asegurate de que XAMPP/MySQL esta encendido.");
-            return; // Detenemos el programa si no hay base de datos
+            return;
         }
 
         System.out.println("[OK] Conexion establecida con exito.\n");
 
-        // 2. Bucle principal del menú
         while (!salir) {
             System.out.println("==========================================");
             System.out.println("      ERP GESTION DE TALLER - GRUPO 1     ");
@@ -74,7 +67,6 @@ public class Main {
             }
         }
 
-        // 3. Limpieza de recursos al salir
         scanner.close();
         try {
             if (conexionGlobal != null && !conexionGlobal.isClosed()) {
@@ -85,41 +77,31 @@ public class Main {
         }
     }
 
-    // ==========================================================
-    // SUBMENUS DE CADA INTEGRANTE
-    // ==========================================================
-
     private static void menuVicente() {
         System.out.println("\n--- MODULO DE ACTIVOS (VICENTE) ---");
         System.out.println("Conectando con MaquinaDAO y ProveedorDAO...");
         
-        // Vicente usa try-with-resources internamente, así que instanciamos sin pasar la conexión
         MaquinaDAO maquinaDAO = new MaquinaDAO();
         ProveedorDAO proveedorDAO = new ProveedorDAO();
         
-        System.out.println("[OK] Modulos de Activos instanciados correctamente.");
-        System.out.println(">> Funcionalidad lista para operar con la base de datos.\n");
+        System.out.println("[OK] Modulos de Activos instanciados correctamente.\n");
     }
 
     private static void menuGuadalupe(Connection con) {
         System.out.println("\n--- MODULO DE RRHH (GUADALUPE) ---");
         System.out.println("Inyectando conexion en UsuarioDAO...");
         
-        // Guadalupe requiere que le pasemos la conexión abierta
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
         
-        System.out.println("[OK] Modulo de Usuarios instanciado correctamente.");
-        System.out.println(">> Funcionalidad lista para leer trabajadores y turnos.\n");
+        System.out.println("[OK] Modulo de Usuarios instanciado correctamente.\n");
     }
 
     private static void menuMiguelAngel(Connection con) {
         System.out.println("\n--- MODULO DE COMPRAS (MIGUEL ANGEL) ---");
         System.out.println("Inyectando conexion en PedidosCompraDAO...");
         
-        // Miguel Ángel también requiere la conexión abierta
         PedidosCompraDAO pedidosDAO = new PedidosCompraDAO(con);
         
-        System.out.println("[OK] Modulo de Compras instanciado.");
-        System.out.println("[AVISO] Nota de equipo: Pendiente de que se anadan las sentencias SQL al DAO.\n");
+        System.out.println("[OK] Modulo de Compras instanciado.\n");
     }
 }
