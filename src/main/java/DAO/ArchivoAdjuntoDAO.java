@@ -12,10 +12,13 @@ import PckConexionBD.ConexionBD;
 import Modelo.ArchivoAdjunto;
 
 /**
- * Clase DAO (Data Access Object) para gestionar la persistencia de los archivos adjuntos.
- * Esta clase se encarga de guardar y recuperar los documentos técnicos, manuales o fotos 
- * que están vinculados a una máquina específica.
+ * <h2>Clase ArchivoAdjuntoDAO</h2>
+ * Clase DAO para gestionar la persistencia de los archivos adjuntos.
+ * Se encarga de guardar y recuperar los metadatos de los documentos tecnicos 
+ * (manuales, imagenes) vinculados a una maquina especifica.
+ * * @see Modelo.ArchivoAdjunto
  * @author Vicente
+ * @version 0.0.1
  */
 public class ArchivoAdjuntoDAO {
 

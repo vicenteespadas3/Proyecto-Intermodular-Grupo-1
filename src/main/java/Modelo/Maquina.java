@@ -9,10 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Clase de entidad (Modelo/POJO) que representa una Máquina física del taller.
+ * <h2>Clase Maquina</h2>
+ * Representa una máquina física del taller.
  * Actúa como el núcleo central del módulo de Gestión de Activos, relacionando
- * los datos físicos de la máquina con sus documentos adjuntos.
+ * los datos físicos de la máquina con sus documentos adjuntos y sus incidencias.
+ * * @see DAO.MaquinaDAO
  * @author Vicente
+ * @version 0.0.1
  */
 public class Maquina {
     

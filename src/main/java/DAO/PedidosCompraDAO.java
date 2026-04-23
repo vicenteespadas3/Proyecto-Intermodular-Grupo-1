@@ -17,7 +17,7 @@ import java.sql.Statement;
  * Clase encargada de ser la intermediaria entre el modelo(PedidosCompra) y la base de datos.
  * Proporciona métodos para gestionar la persistencia de los pedidos de compra.
  * 
- * @see PedidosCompra
+ * @see Modelo.PedidosCompra
  * @author Miguel Ángel Sánchez Martínez
  * @version 0.0.1
  */

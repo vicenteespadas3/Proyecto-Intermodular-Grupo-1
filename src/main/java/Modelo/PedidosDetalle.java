@@ -19,8 +19,12 @@ import java.util.Objects;
  * <li>cantidad_recibida</li>
  * <li>precio_unitario</li>
  * </ul>
+<<<<<<< HEAD
  * 
  * @see PedidosDetalleDAO
+=======
+ * @see DAO.PedidosDetalleDAO
+>>>>>>> 7a2d9ffd760b2b1bd68800cc929c95e4f50be022
  * @author Miguel Ángel Sánchez Martínez
  * @version 0.0.1
  */

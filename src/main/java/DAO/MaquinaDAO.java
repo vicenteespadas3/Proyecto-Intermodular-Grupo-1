@@ -12,10 +12,12 @@ import PckConexionBD.ConexionBD;
 import Modelo.Maquina;
 
 /**
- * Clase DAO (Data Access Object) para gestionar la persistencia de las máquinas.
- * Se encarga de aislar la lógica de negocio de la lógica de acceso a la base de datos,
- * realizando las operaciones CRUD (Crear, Leer, Actualizar, Borrar) sobre la tabla 'maquinas'.
- * * @author Vicente
+ * <h2>Clase MaquinaDAO</h2>
+ * Centraliza las operaciones de acceso a datos (CRUD) para la entidad Maquina.
+ * Implementa protección activa contra Inyección SQL mediante PreparedStatement.
+ * * @see Modelo.Maquina
+ * @author Vicente
+ * @version 0.0.1
  */
 public class MaquinaDAO {
 

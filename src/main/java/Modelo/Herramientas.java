@@ -11,7 +11,7 @@ package Modelo;
  * un número de herramientas a una tarea. Sin este archivo, el proyecto no 
  * se podía ejecutar. Es una implementación "dummy" (de prueba) que en el 
  * futuro deberá mapearse con la tabla real de herramientas de la base de datos.
- * * @author Equipo 1 (Tech Lead Hotfix)
+ * * @author Equipo 1
  */
 public class Herramientas {
 

@@ -1,12 +1,13 @@
 package Modelo;
 
 /**
+ * <h2>Clase Usuario</h2>
+ * Representa un usuario o trabajador dentro del sistema CMMS.
+ * Incluye informacion basica de identificacion, contacto y rol de acceso,
+ * ademas de metodos internos para la validacion de integridad de datos.
+ * * @see DAO.UsuarioDAO
  * @author Guadalupe M.G.M
- */
-
-/**
- * Clase que representa un usuario del sistema CMMS.
- * Incluye información básica y métodos de validación simples.
+ * @version 0.0.1
  */
 public class Usuario {
 

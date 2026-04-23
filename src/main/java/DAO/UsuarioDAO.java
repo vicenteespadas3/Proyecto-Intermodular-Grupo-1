@@ -1,18 +1,18 @@
 package DAO;
 
-/**
- * @author Guadalupe M.G.M
- */
-
 import java.sql.*;
 import java.util.ArrayList;
-
 import Modelo.Usuario;
 
 
 /**
- * Clase DAO para gestionar la persistencia de los usuarios.
- * Proporciona métodos para realizar operaciones CRUD en la tabla 'usuarios'.
+ * <h2>Clase UsuarioDAO</h2>
+ * Clase Data Access Object (DAO) encargada de la persistencia de usuarios.
+ * Centraliza las operaciones de lectura, insercion, actualizacion y borrado 
+ * (CRUD) sobre la tabla 'usuarios' de la base de datos MySQL.
+ * * @see Modelo.Usuario
+ * @author Guadalupe M.G.M
+ * @version 0.0.1
  */
 public class UsuarioDAO {
 

@@ -12,7 +12,7 @@ package Modelo;
  * aún no estaba desarrollada en el proyecto, bloqueaba la compilación
  * de todo el equipo. Se ha creado esta estructura mínima para salvar
  * el error y permitir que el programa funcione.
- * * @author Equipo 1 (Tech Lead Hotfix)
+ * * @author Equipo 1
  */
 public class Definiciones {
 

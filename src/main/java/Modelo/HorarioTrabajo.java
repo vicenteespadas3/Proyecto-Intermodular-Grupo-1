@@ -3,12 +3,14 @@ package Modelo;
 import java.time.LocalTime;
 
 /**
+ * <h2>Clase HorarioTrabajo</h2>
+ * Representa el horario de trabajo o turno asignado a un usuario en el taller.
+ * Permite gestionar los periodos de actividad laboral, incluyendo el dia de 
+ * la semana y las horas de inicio y fin, facilitando la planificacion de 
+ * mantenimientos segun la disponibilidad del personal.
+ * * @see DAO.HorarioTrabajoDAO
  * @author Guadalupe M.G.M
- */
-
-/**
- * Clase que representa el horario de trabajo de un usuario en el CMMS.
- * Permite validaciones básicas de horarios.
+ * @version 0.0.1
  */
 public class HorarioTrabajo {
 

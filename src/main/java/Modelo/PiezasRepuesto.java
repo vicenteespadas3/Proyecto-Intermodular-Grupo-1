@@ -11,7 +11,7 @@ package Modelo;
  * para saber qué se está comprando exactamente. Al no existir la clase, 
  * NetBeans marcaba el proyecto en rojo. Esta clase actúa como un "maniquí" 
  * temporal para que la relación orientada a objetos no se rompa y el código compile.
- * * @author Equipo 1 (Tech Lead Hotfix)
+ * * @author Equipo 1
  */
 public class PiezasRepuesto {
 

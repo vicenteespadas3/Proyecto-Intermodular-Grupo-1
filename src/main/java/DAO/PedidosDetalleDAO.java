@@ -10,7 +10,7 @@ import java.sql.Connection;
  * Clase encargada de ser la intermediaria entre el modelo(PedidosDetalle) y la base de datos.
  * Proporciona métodos para gestionar la persistencia de los detalles de los pedidos.
  * 
- * @see PedidosDetalle
+ * @see Modelo.PedidosDetalle
  * @author Miguel Ángel Sánchez Martínez
  * @version 0.0.1
  */
