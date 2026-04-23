@@ -17,11 +17,11 @@ public class TestPruebasDAO {
         // 2. Crear objetos de apoyo (necesitas IDs que existan en tu BBDD externa)
         // Nota: Asegúrate de que el ID 1 de proveedor y el ID 1 de pieza existan en tu
         // tabla
-        Proveedor proveedor = new Proveedor("7342729F", "OicaSL", "600000000", "OicaSL@famail.com");
-        // proveedor.setId_proveedor(1); -- Autoincrementado por defecto
+        Proveedor proveedor = new Proveedor();
+        proveedor.setId_proveedor(1);
 
-        Definiciones estado = new Definiciones(1, "Pendientes", "Pendiente");
-        // estado.setId_definicion(1); // Ejemplo: 'Pendiente'
+        Definiciones estado = new Definiciones();
+        estado.setIdDefinicion(1);
 
         // 3. Crear el Pedido (Cabecera)
         PedidosCompra nuevoPedido = new PedidosCompra();

@@ -14,15 +14,17 @@ public class ConexionBD {
 
     // 1. Datos de conexión a tu base de datos local
     // Asegúrate de que el puerto sea el 3306 (el habitual de MySQL/XAMPP)
-    private static final String URL = "jdbc:mysql://172.20.10.2:3306/GestionTaller?useSSL=false&serverTimezone=UTC";
-    private static final String USUARIO = "admin"; // Cambia esto si tu usuario en clase es distinto
-    private static final String PASSWORD = "123456"; // Cambia esto si tienes contraseña en tu MySQL local
     /*
      * private static final String URL =
-     * "jdbc:mysql://192.168.56.103:3306/gestiontaller?useSSL=false&serverTimezone=UTC";
-     * private static final String USUARIO = "usuario";
-     * private static final String PASSWORD = "1234";
+     * "jdbc:mysql://172.20.10.2:3306/GestionTaller?useSSL=false&serverTimezone=UTC";
+     * private static final String USUARIO = "admin"; // Cambia esto si tu usuario
+     * en clase es distinto
+     * private static final String PASSWORD = "123456"; // Cambia esto si tienes
+     * contraseña en tu MySQL local
      */
+    private static final String URL = "jdbc:mysql://192.168.56.103:3306/gestiontaller?useSSL=false&serverTimezone=UTC";
+    private static final String USUARIO = "usuario";
+    private static final String PASSWORD = "1234";
 
     /**
      * Establece y devuelve una conexión a la base de datos.
