@@ -3,18 +3,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package DAO;
+
+import Modelo.Definiciones;
 import Modelo.PedidosCompra;
 import Modelo.PedidosDetalle;
+import Modelo.Proveedor;
 import PckConexionBD.ConexionBD;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.Timestamp;
 
 /**
  * <h2>Clase PedidosCompraDAO</h2>
- * Clase encargada de ser la intermediaria entre el modelo(PedidosCompra) y la base de datos.
+ * Clase encargada de ser la intermediaria entre el modelo(PedidosCompra) y la
+ * base de datos.
  * Proporciona métodos para gestionar la persistencia de los pedidos de compra.
  * 
  * @see Modelo.PedidosCompra
@@ -22,17 +30,18 @@ import java.sql.Statement;
  * @version 0.0.1
  */
 public class PedidosCompraDAO {
-    
+
     private Connection con;
 
     /**
      * Constructor que recibe una conexión a la base de datos.
+     * 
      * @param con Conexión activa.
      */
     public PedidosCompraDAO(Connection con) {
         this.con = con;
     }
-    
+
     public boolean insertar(PedidosCompra pedido) {
         Connection con = ConexionBD.getConnection();
         String sqlPedido = "INSERT INTO pedidos_compra (fecha_pedido, id_proveedor, id_estado, observaciones) VALUES (?, ?, ?, ?)";
@@ -83,7 +92,91 @@ public class PedidosCompraDAO {
         } finally {
             try {
                 con.setAutoCommit(true); // Restauramos el estado por defecto
-            } catch (SQLException e) { e.printStackTrace(); }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    /**
+     * Lista todos los pedidos de compra
+     * 
+     * @return Devuelve una lista de pedidos de compra
+     */
+    public List<PedidosCompra> listar() {
+        List<PedidosCompra> listaPedidos = new ArrayList<>();
+        String sql = "SELECT * FROM pedidos_compra";
+
+        try (PreparedStatement ps = con.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                // 1. Datos básicos
+                int idPedido = rs.getInt("id_pedido");
+                LocalDateTime fechaPedido = rs.getTimestamp("fecha_pedido").toLocalDateTime();
+                String observaciones = rs.getString("observaciones");
+
+                // 2. Extraer fechas de entrega (Tratando posibles nulos en la DB)
+                Timestamp tsEsperada = rs.getTimestamp("fecha_entrega_esperada");
+                LocalDateTime fechaEsperada = (tsEsperada != null) ? tsEsperada.toLocalDateTime() : null;
+
+                Timestamp tsReal = rs.getTimestamp("fecha_entrega_real");
+                LocalDateTime fechaReal = (tsReal != null) ? tsReal.toLocalDateTime() : null;
+
+                // 3. Cargar el objeto Proveedor completo
+                int idProv = rs.getInt("id_proveedor");
+                ProveedorDAO provDAO = new ProveedorDAO(this.con);
+                Proveedor proveedor = provDAO.buscarPorId(idProv);
+
+                // 4. Crear el objeto con el constructor de 6 parámetros de tus compañeros
+                // Orden: fecha, proveedor, detalles, entrega_esp, entrega_real, observaciones
+                PedidosCompra pedido = new PedidosCompra(
+                        fechaPedido,
+                        proveedor,
+                        new ArrayList<>(), // Se llenará con setDetalles abajo
+                        fechaEsperada,
+                        fechaReal,
+                        observaciones);
+
+                // 5. Asignar el ID (ya que el constructor lo tiene comentado)
+                pedido.setId_pedido(idPedido);
+
+                // 6. Cargar los hijos (Detalles)
+                pedido.setDetalles(this.obtenerDetalles(idPedido));
+
+                listaPedidos.add(pedido);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al listar pedidos: " + e.getMessage());
+        }
+        return listaPedidos;
+    }
+
+    /**
+     * Método auxiliar para obtener las líneas de un pedido específico
+     */
+    private List<PedidosDetalle> obtenerDetalles(int idPedido) {
+        List<PedidosDetalle> detalles = new ArrayList<>();
+        String sql = "SELECT * FROM pedidos_detalle WHERE id_pedido = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idPedido);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                PedidosDetalle linea = new PedidosDetalle();
+                linea.setCantidad_solicitada(rs.getInt("cantidad_solicitada"));
+                linea.setPrecio_unitario(rs.getDouble("precio_unitario"));
+
+                // Cargar la pieza (necesitas el objeto Pieza completo para la tabla)
+                PiezasRepuestoDAO piezaDAO = new PiezasRepuestoDAO(this.con);
+                linea.setPieza(piezaDAO.buscarPorId(rs.getInt("id_pieza")));
+
+                detalles.add(linea);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener detalles: " + e.getMessage());
+        }
+        return detalles;
     }
 }
