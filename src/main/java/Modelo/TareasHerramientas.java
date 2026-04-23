@@ -10,9 +10,11 @@ import java.util.Objects;
  * <h2>Clase TareasHerramientas</h2>
  * Representa la cantidad de herramientas que se usan en una tarea de mantenimiento en el sistema
  * Esta clase se relaciona con la tabla tareas_herramientas de la base de datos
- * Esta clase se compone de los siguientes atributos
+ * Esta clase se compone de los siguientes atributos:
  * <ul>
- *  <li></li>
+ *  <li>id_tareas_herramientas</li>
+ *  <li>herramientas</li>
+ *  <li>cantidad</li>
  * </ul>
  * @see TareasHerramientasDAO
  * @author Miguel Ángel Sánchez Martínez
