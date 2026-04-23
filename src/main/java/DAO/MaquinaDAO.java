@@ -12,16 +12,18 @@ import PckConexionBD.ConexionBD;
 import Modelo.Maquina;
 
 /**
- * Clase DAO (Data Access Object) para gestionar la persistencia de las máquinas.
- * Se encarga de aislar la lógica de negocio de la lógica de acceso a la base de datos,
- * realizando las operaciones CRUD (Crear, Leer, Actualizar, Borrar) sobre la tabla 'maquinas'.
- * * @author Vicente
+ * <h2>Clase MaquinaDAO</h2>
+ * Centraliza las operaciones de acceso a datos (CRUD) para la entidad Maquina.
+ * Implementa protección activa contra Inyección SQL mediante PreparedStatement.
+ * * @see Modelo.Maquina
+ * @author Vicente
+ * @version 0.0.1
  */
 public class MaquinaDAO {
 
     /**
      * Inserta un nuevo registro de máquina en la base de datos.
-     * * @param m Objeto de tipo Maquina que contiene los datos a guardar.
+     * @param m Objeto de tipo Maquina que contiene los datos a guardar.
      * @return true si la inserción fue exitosa (se afectó 1 fila), false si hubo algún error.
      */
     public boolean insertar(Maquina m) {
@@ -55,7 +57,7 @@ public class MaquinaDAO {
     /**
      * Crea una relación entre una máquina y un proveedor en la tabla intermedia.
      * Esto resuelve la relación de Muchos a Muchos (N:M) de la base de datos.
-     * * @param idMaquina El identificador único de la máquina.
+     * @param idMaquina El identificador único de la máquina.
      * @param idProveedor El identificador único del proveedor.
      */
     public void vincularProveedor(int idMaquina, int idProveedor) {
@@ -79,7 +81,7 @@ public class MaquinaDAO {
 
     /**
      * Recupera todos los registros de la tabla 'maquinas' y los convierte en objetos Java.
-     * * @return Una lista (List) que contiene todos los objetos Maquina encontrados en la BD.
+     * @return Una lista (List) que contiene todos los objetos Maquina encontrados en la BD.
      */
     public List<Maquina> listarTodas() {
         // Inicializamos una lista vacía donde iremos guardando las máquinas que encontremos
