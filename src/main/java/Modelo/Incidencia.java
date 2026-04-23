@@ -2,130 +2,182 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <h2>Clase Incidencia</h2>
- * Representa una avería o problema reportado en una máquina.
- * Sirve como puente de integración funcional entre el módulo de Activos 
- * y el módulo de Recursos Humanos (asignación de técnicos).
- * * @see DAO.IncidenciaDAO
- * @author Vicente
+ * Representa un fallo, avería o tarea de mantenimiento en una máquina.
+ * Esta clase actúa como puente intermodular relacionando una Máquina (Activos)
+ * con un Usuario (Recursos Humanos).
+ * * @author Equipo 1
  * @version 0.0.1
  */
 public class Incidencia {
-    
-    // --- Atributos de la Clase ---
+
     private int idIncidencia;
-    private int idMaquina;
-    private Integer idTecnicoAsignado; // Integer permite valores nulos en la BD
+    private Maquina maquina;
+    private int idUsuario;
     private String descripcion;
-    private LocalDateTime fechaReporte;
-    private String prioridad; // Ej: "Alta", "Media", "Baja"
-    private String estado;    // Ej: "Abierta", "En curso", "Cerrada"
+    private Date fecha;
+    private String prioridad;
+
+    // --- 1. Constructor Vacío ---
 
     /**
-     * Constructor vacio por defecto.
-     * Util para frameworks de persistencia y para instanciar objetos vacios.
+     * Constructor vacío por defecto.
+     * Requisito fundamental para la instanciación de objetos POJO y uso genérico.
      */
     public Incidencia() {
     }
 
+    // --- 2. Constructores Parametrizados ---
+
     /**
-     * Constructor completo para instanciar incidencias recuperadas de la base de datos.
-     * * @param idIncidencia Identificador unico de la incidencia.
-     * @param idMaquina ID de la maquina afectada.
-     * @param idTecnicoAsignado ID del usuario tecnico (puede ser null).
-     * @param descripcion Detalle del problema detectado.
-     * @param fechaReporte Fecha y hora exacta del reporte.
-     * @param prioridad Nivel de urgencia.
-     * @param estado Situacion actual de la reparacion.
+     * Constructor completo con ID.
+     * Utilizado por el DAO cuando se recupera un registro existente desde la base de datos.
+     * * @param idIncidencia Identificador único de la incidencia.
+     * @param maquina Objeto Maquina asociada a la incidencia.
+     * @param idUsuario ID del empleado que reporta o gestiona la incidencia.
+     * @param descripcion Detalle del fallo o avería.
+     * @param fecha Fecha en la que ocurrió o se reportó la incidencia.
+     * @param prioridad Nivel de urgencia (ej. Alta, Media, Baja).
      */
-    public Incidencia(int idIncidencia, int idMaquina, Integer idTecnicoAsignado, String descripcion, 
-                      LocalDateTime fechaReporte, String prioridad, String estado) {
+    public Incidencia(int idIncidencia, Maquina maquina, int idUsuario, String descripcion, Date fecha, String prioridad) {
         this.idIncidencia = idIncidencia;
-        this.idMaquina = idMaquina;
-        this.idTecnicoAsignado = idTecnicoAsignado;
+        this.maquina = maquina;
+        this.idUsuario = idUsuario;
         this.descripcion = descripcion;
-        this.fechaReporte = fechaReporte;
+        this.fecha = fecha;
         this.prioridad = prioridad;
-        this.estado = estado;
     }
 
-    // --- Metodos Getter y Setter ---
+    /**
+     * Constructor de inserción sin ID.
+     * Utilizado para crear nuevas incidencias antes de guardarlas en MySQL (Auto-Incremental).
+     * * @param maquina Objeto Maquina asociada a la incidencia.
+     * @param idUsuario ID del empleado que reporta o gestiona la incidencia.
+     * @param descripcion Detalle del fallo o avería.
+     * @param fecha Fecha en la que ocurrió o se reportó la incidencia.
+     * @param prioridad Nivel de urgencia (ej. Alta, Media, Baja).
+     */
+    public Incidencia(Maquina maquina, int idUsuario, String descripcion, Date fecha, String prioridad) {
+        this.maquina = maquina;
+        this.idUsuario = idUsuario;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+        this.prioridad = prioridad;
+    }
 
+    // --- 3. Getters y Setters ---
+
+    /**
+     * Obtiene el ID único de la incidencia.
+     * @return El ID numérico de la incidencia.
+     */
     public int getIdIncidencia() {
         return idIncidencia;
     }
 
+    /**
+     * Establece el ID único de la incidencia.
+     * @param idIncidencia El identificador a asignar.
+     */
     public void setIdIncidencia(int idIncidencia) {
         this.idIncidencia = idIncidencia;
     }
 
-    public int getIdMaquina() {
-        return idMaquina;
+    /**
+     * Obtiene la máquina afectada por la incidencia.
+     * @return El objeto Maquina asociado.
+     */
+    public Maquina getMaquina() {
+        return maquina;
     }
 
-    public void setIdMaquina(int idMaquina) {
-        this.idMaquina = idMaquina;
+    /**
+     * Vincula una máquina a la incidencia.
+     * @param maquina El objeto Maquina a vincular.
+     */
+    public void setMaquina(Maquina maquina) {
+        this.maquina = maquina;
     }
 
-    public Integer getIdTecnicoAsignado() {
-        return idTecnicoAsignado;
+    /**
+     * Obtiene el ID del usuario asignado a la incidencia.
+     * @return El ID numérico del usuario/trabajador.
+     */
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setIdTecnicoAsignado(Integer idTecnicoAsignado) {
-        this.idTecnicoAsignado = idTecnicoAsignado;
+    /**
+     * Asigna un usuario/trabajador a la incidencia.
+     * @param idUsuario El ID del usuario a asignar.
+     */
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
+    /**
+     * Obtiene la descripción detallada del problema.
+     * @return Texto descriptivo de la incidencia.
+     */
     public String getDescripcion() {
         return descripcion;
     }
 
+    /**
+     * Define la descripción del problema o tarea.
+     * @param descripcion Texto descriptivo a establecer.
+     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    public LocalDateTime getFechaReporte() {
-        return fechaReporte;
+    /**
+     * Obtiene la fecha de reporte de la incidencia.
+     * @return Objeto Date con la fecha.
+     */
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setFechaReporte(LocalDateTime fechaReporte) {
-        this.fechaReporte = fechaReporte;
+    /**
+     * Establece la fecha de la incidencia.
+     * @param fecha Objeto Date a establecer.
+     */
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
+    /**
+     * Obtiene el nivel de prioridad de la incidencia.
+     * @return String indicando la prioridad (Alta, Media, Baja).
+     */
     public String getPrioridad() {
         return prioridad;
     }
 
+    /**
+     * Establece el nivel de prioridad de la incidencia.
+     * @param prioridad El texto de la prioridad a asignar.
+     */
     public void setPrioridad(String prioridad) {
         this.prioridad = prioridad;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    // --- Metodos Sobrescritos ---
+    // --- 4. Métodos Sobrescritos ---
 
     /**
-     * Representacion textual de la incidencia.
-     * Facilita la depuracion y la visualizacion en controles de lista.
+     * Representación en formato cadena de texto de la incidencia.
+     * Útil para mostrar resúmenes por consola o interfaces gráficas.
+     * @return Una cadena formateada con los datos principales de la incidencia.
      */
     @Override
     public String toString() {
-        String tecnico = (idTecnicoAsignado != null) ? idTecnicoAsignado.toString() : "SIN ASIGNAR";
-        return "Incidencia #" + idIncidencia + " [Maquina: " + idMaquina + "] - " +
-               "Tecnico: " + tecnico + " - Prioridad: " + prioridad + " - Estado: " + estado;
+        String sn = (maquina != null) ? maquina.getNumeroSerie() : "S/N Desconocido";
+        return "[" + prioridad + "] Máquina " + sn + " (User ID: " + idUsuario + ") -> " + descripcion;
     }
 }

@@ -4,101 +4,179 @@
  */
 package Modelo;
 
+import java.util.Date;
+
 /**
  * <h2>Clase ArchivoAdjunto</h2>
- * Representa un documento técnico, manual o imagen.
- * Se encarga de gestionar las rutas físicas de los ficheros vinculados
- * a la maquinaria pesada del taller.
- * * @see DAO.ArchivoAdjuntoDAO
- * @author Vicente
+ * Representa un documento, manual de instrucciones, certificado de garantía 
+ * o imagen fotográfica vinculada a una máquina específica del taller.
+ * * @author Equipo 1
  * @version 0.0.1
  */
 public class ArchivoAdjunto {
-    
-    // --- Atributos ---
-    // Variables privadas para encapsular la información del archivo.
+
     private int idArchivo;
-    private String nombre;
-    private String ruta;
-    private String tipo;
-    
-    // Este atributo actúa como la "Clave Foránea" (Foreign Key) en el mundo de los objetos,
-    // permitiendo saber a qué máquina exacta pertenece este documento.
-    private int idMaquina;
-    
+    private Maquina maquina;
+    private String nombreArchivo;
+    private String extension;
+    private String rutaLocal;
+    private Date fechaSubida;
+
+    // --- 1. Constructor Vacío ---
+
     /**
-     * Constructor para instanciar un archivo recuperado de la base de datos o
-     * para preparar uno nuevo antes de enviarlo al DAO.
-     * * @param idArchivo Identificador único del archivo.
-     * @param nombre Nombre visible del documento (ej. "Manual_Uso").
-     * @param ruta Ubicación física o URL donde está guardado el archivo.
-     * @param tipo Extensión o categoría del archivo (ej. "PDF", "JPG").
-     * @param idMaquina ID de la máquina a la que está vinculado.
+     * Constructor vacío por defecto.
+     * Obligatorio para la instanciación de objetos POJO y el mapeo de datos.
      */
-    public ArchivoAdjunto(int idArchivo, String nombre, String ruta, String tipo, int idMaquina) {
-        this.idArchivo = idArchivo;
-        this.nombre = nombre;
-        this.ruta = ruta;
-        this.tipo = tipo;
-        this.idMaquina = idMaquina;
+    public ArchivoAdjunto() {
     }
 
-    
-    // --- Getters ---
-    // Métodos de acceso para leer la información del archivo desde otras clases.
-    
+    // --- 2. Constructores Parametrizados ---
+
+    /**
+     * Constructor completo con ID.
+     * Utilizado exclusivamente por el DAO cuando recupera un documento existente desde la base de datos.
+     * * @param idArchivo Identificador único y autonumérico del archivo.
+     * @param maquina Objeto Maquina al que pertenece este documento.
+     * @param nombreArchivo Nombre del archivo sin extensión (ej. "Manual_Excavadora").
+     * @param extension Formato del archivo (ej. "pdf", "jpg", "docx").
+     * @param rutaLocal Ruta absoluta o relativa donde se almacena físicamente el archivo en el servidor.
+     * @param fechaSubida Fecha y hora en la que el documento fue registrado en el sistema.
+     */
+    public ArchivoAdjunto(int idArchivo, Maquina maquina, String nombreArchivo, String extension, String rutaLocal, Date fechaSubida) {
+        this.idArchivo = idArchivo;
+        this.maquina = maquina;
+        this.nombreArchivo = nombreArchivo;
+        this.extension = extension;
+        this.rutaLocal = rutaLocal;
+        this.fechaSubida = fechaSubida;
+    }
+
+    /**
+     * Constructor de inserción sin ID.
+     * Utilizado al subir un nuevo documento desde la aplicación antes de persistirlo en MySQL.
+     * * @param maquina Objeto Maquina al que pertenece este documento.
+     * @param nombreArchivo Nombre del archivo sin extensión.
+     * @param extension Formato del archivo.
+     * @param rutaLocal Ruta física del archivo en el servidor.
+     * @param fechaSubida Fecha de registro del documento.
+     */
+    public ArchivoAdjunto(Maquina maquina, String nombreArchivo, String extension, String rutaLocal, Date fechaSubida) {
+        this.maquina = maquina;
+        this.nombreArchivo = nombreArchivo;
+        this.extension = extension;
+        this.rutaLocal = rutaLocal;
+        this.fechaSubida = fechaSubida;
+    }
+
+    // --- 3. Getters y Setters ---
+
     /**
      * Obtiene el identificador único del archivo.
-     * @return ID del archivo.
+     * @return El ID numérico del documento.
      */
     public int getIdArchivo() {
         return idArchivo;
     }
-    
+
+    /**
+     * Establece el identificador único del archivo.
+     * @param idArchivo El ID a asignar.
+     */
+    public void setIdArchivo(int idArchivo) {
+        this.idArchivo = idArchivo;
+    }
+
+    /**
+     * Obtiene la máquina a la que está vinculado este documento.
+     * @return El objeto Maquina asociado.
+     */
+    public Maquina getMaquina() {
+        return maquina;
+    }
+
+    /**
+     * Vincula el documento a una máquina específica.
+     * @param maquina El objeto Maquina a vincular.
+     */
+    public void setMaquina(Maquina maquina) {
+        this.maquina = maquina;
+    }
+
     /**
      * Obtiene el nombre del archivo.
-     * @return Nombre del archivo.
+     * @return Nombre del documento sin la extensión.
      */
-    public String getNombre() { 
-        return nombre; 
+    public String getNombreArchivo() {
+        return nombreArchivo;
     }
-    
+
     /**
-     * Obtiene la ruta de almacenamiento del archivo.
-     * @return Ruta del archivo.
+     * Define el nombre del documento.
+     * @param nombreArchivo El nombre a asignar.
      */
-    public String getRuta() { 
-        return ruta; 
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
     }
-    
+
     /**
-     * Obtiene el tipo o extensión del archivo.
-     * @return Tipo de archivo.
+     * Obtiene el formato o extensión del archivo.
+     * @return La extensión (ej. "pdf").
      */
-    public String getTipo() { 
-        return tipo;
+    public String getExtension() {
+        return extension;
     }
-    
+
     /**
-     * Obtiene el ID de la máquina asociada al archivo.
-     * @return ID de la máquina.
+     * Define la extensión del archivo.
+     * @param extension El formato a asignar.
      */
-    public int getIdMaquina() { 
-        return idMaquina;
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
-    
-    // ¡OJO! No incluimos Setters (setNombre, setRuta...). 
-    // Un archivo adjunto, una vez subido y registrado, se considera "Inmutable" en este contexto.
-    // Si un archivo cambia, físicamente es un archivo distinto, por lo que se borraría el viejo 
-    // y se insertaría uno nuevo en lugar de modificar sus rutas en memoria.
-    
+
     /**
-     * Sobrescribe toString() para mostrar el archivo de forma amigable en la Interfaz Gráfica.
-     * Si ponemos una lista de ArchivoAdjunto en un JList, esto es lo que leerá el usuario.
-     * * @return Cadena con formato: "NombreDelArchivo (Tipo)"
+     * Obtiene la ruta donde está guardado el archivo físicamente.
+     * @return La ruta del directorio local o de red.
+     */
+    public String getRutaLocal() {
+        return rutaLocal;
+    }
+
+    /**
+     * Define la ruta de almacenamiento del archivo.
+     * @param rutaLocal La ruta física a guardar.
+     */
+    public void setRutaLocal(String rutaLocal) {
+        this.rutaLocal = rutaLocal;
+    }
+
+    /**
+     * Obtiene la fecha en la que se subió o adjuntó el documento.
+     * @return Objeto Date con la fecha de subida.
+     */
+    public Date getFechaSubida() {
+        return fechaSubida;
+    }
+
+    /**
+     * Establece la fecha de subida del documento.
+     * @param fechaSubida La fecha a asignar.
+     */
+    public void setFechaSubida(Date fechaSubida) {
+        this.fechaSubida = fechaSubida;
+    }
+
+    // --- 4. Métodos Sobrescritos ---
+
+    /**
+     * Devuelve una cadena de texto representativa del documento.
+     * Ideal para mostrar el archivo y la máquina a la que pertenece en un listado o consola.
+     * @return Cadena formateada con el nombre, extensión y número de serie de la máquina vinculada.
      */
     @Override
     public String toString() {
-        return nombre + " (" + tipo + ")";
+        String sn = (maquina != null) ? maquina.getNumeroSerie() : "S/N Desconocido";
+        return "[DOC] " + nombreArchivo + "." + extension + " -> Vinculado a Máquina: " + sn;
     }
 }

@@ -6,16 +6,14 @@ package Modelo;
 
 /**
  * <h2>Clase Proveedor</h2>
- * Representa la entidad de un proveedor o suministrador del taller.
- * Esta clase mapea de forma exacta la estructura de la tabla 'proveedores_maquinas' 
- * de la base de datos MySQL.
- * * @see DAO.ProveedorDAO
- * @author Vicente
+ * Representa la entidad de un proveedor, empresa o persona física que suministra
+ * maquinaria, activos o piezas de repuesto al taller.
+ * Esta clase mapea de forma exacta la estructura de la tabla 'proveedores_maquinas' de MySQL.
+ * * @author Equipo 1
  * @version 0.0.1
  */
 public class Proveedor {
 
-    // --- Atributos (Mapeados directamente de las columnas de la BD) ---
     private int idProveedor;
     private String nombre;
     private String contacto;
@@ -23,24 +21,27 @@ public class Proveedor {
     private String email;
     private String direccion;
 
-    // --- Constructores ---
+    // --- 1. Constructor Vacío ---
 
     /**
-     * Constructor 1: Vacío por defecto.
-     * Requisito para el estándar POJO y para instanciaciones genéricas.
+     * Constructor vacío por defecto.
+     * Requisito fundamental para la creación de objetos POJO, serialización 
+     * y uso genérico en estructuras de datos.
      */
     public Proveedor() {
     }
 
+    // --- 2. Constructores Parametrizados ---
+
     /**
-     * Constructor 2: Completo (Con ID).
-     * Se utiliza principalmente en el DAO al recuperar registros existentes de la BD (SELECT).
-     * * @param idProveedor Identificador único autoincremental.
-     * @param nombre Nombre de la empresa o entidad.
-     * @param contacto Nombre de la persona de referencia.
+     * Constructor completo con identificador (ID).
+     * Utilizado exclusivamente por el DAO cuando recupera un registro existente de la base de datos.
+     * * @param idProveedor Identificador numérico único del proveedor (Auto-incremental en BD).
+     * @param nombre Nombre fiscal o comercial de la empresa proveedora.
+     * @param contacto Nombre de la persona física de referencia o comercial.
      * @param telefono Número de teléfono de contacto.
-     * @param email Correo electrónico de contacto.
-     * @param direccion Ubicación física del proveedor.
+     * @param email Correo electrónico principal del proveedor.
+     * @param direccion Ubicación física, calle o sede de la empresa.
      */
     public Proveedor(int idProveedor, String nombre, String contacto, String telefono, String email, String direccion) {
         this.idProveedor = idProveedor;
@@ -52,14 +53,14 @@ public class Proveedor {
     }
 
     /**
-     * Constructor 3: Para inserción (Sin ID).
-     * Se utiliza al crear un proveedor nuevo desde la interfaz o lógica de negocio.
-     * El ID no se incluye porque la base de datos lo genera automáticamente.
-     * * @param nombre Nombre de la empresa o entidad.
-     * @param contacto Nombre de la persona de referencia.
+     * Constructor de inserción (Sin ID).
+     * Se usa al crear un nuevo proveedor desde la interfaz antes de guardarlo en MySQL.
+     * La base de datos se encargará de generar su ID correspondiente.
+     * * @param nombre Nombre fiscal o comercial de la empresa proveedora.
+     * @param contacto Nombre de la persona física de referencia o comercial.
      * @param telefono Número de teléfono de contacto.
-     * @param email Correo electrónico de contacto.
-     * @param direccion Ubicación física del proveedor.
+     * @param email Correo electrónico principal del proveedor.
+     * @param direccion Ubicación física, calle o sede de la empresa.
      */
     public Proveedor(String nombre, String contacto, String telefono, String email, String direccion) {
         this.nombre = nombre;
@@ -69,64 +70,113 @@ public class Proveedor {
         this.direccion = direccion;
     }
 
-    // --- Métodos Getter y Setter ---
+    // --- 3. Getters y Setters ---
 
+    /**
+     * Obtiene el ID único asignado por la base de datos.
+     * @return El identificador numérico del proveedor.
+     */
     public int getIdProveedor() {
         return idProveedor;
     }
 
+    /**
+     * Establece el ID único del proveedor.
+     * @param idProveedor El identificador a asignar.
+     */
     public void setIdProveedor(int idProveedor) {
         this.idProveedor = idProveedor;
     }
 
+    /**
+     * Obtiene el nombre comercial de la empresa proveedora.
+     * @return Cadena de texto con el nombre.
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Define el nombre de la empresa proveedora.
+     * @param nombre El nombre comercial o fiscal.
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * Obtiene el nombre de la persona de contacto.
+     * @return Nombre del responsable o comercial.
+     */
     public String getContacto() {
         return contacto;
     }
 
+    /**
+     * Define a la persona física de referencia.
+     * @param contacto Nombre de la persona de contacto.
+     */
     public void setContacto(String contacto) {
         this.contacto = contacto;
     }
 
+    /**
+     * Obtiene el número de teléfono del proveedor.
+     * @return Texto con el número de teléfono.
+     */
     public String getTelefono() {
         return telefono;
     }
 
+    /**
+     * Establece el número de teléfono del proveedor.
+     * @param telefono El teléfono a asignar.
+     */
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
+    /**
+     * Obtiene el correo electrónico de contacto.
+     * @return Dirección de email.
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Establece el correo electrónico del proveedor.
+     * @param email La dirección de email a asignar.
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Obtiene la dirección física o sede del proveedor.
+     * @return Texto con la dirección completa.
+     */
     public String getDireccion() {
         return direccion;
     }
 
+    /**
+     * Define la dirección física de la empresa.
+     * @param direccion Calle, número, código postal, etc.
+     */
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 
-    // --- Métodos Sobrescritos ---
+    // --- 4. Métodos Sobrescritos ---
 
     /**
-     * Representación textual del proveedor, útil para mostrar en JLists o JComboBoxes.
-     * @return El nombre del proveedor y su contacto.
+     * Proporciona una representación textual resumida del proveedor.
+     * Facilita la visualización en listados de consola o desplegables en interfaces gráficas.
+     * @return Una cadena que muestra el nombre de la empresa y la persona de contacto.
      */
     @Override
     public String toString() {
-        return nombre + " (" + contacto + ")";
+        return nombre + " (Contacto: " + contacto + ")";
     }
 }

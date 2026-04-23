@@ -4,43 +4,44 @@
  */
 package Modelo;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 /**
  * <h2>Clase Maquina</h2>
- * Representa una máquina física del taller.
- * Actúa como el núcleo central del módulo de Gestión de Activos, relacionando
- * los datos físicos de la máquina con sus documentos adjuntos y sus incidencias.
- * * @see DAO.MaquinaDAO
- * @author Vicente
+ * Representa un activo físico, herramienta pesada o maquinaria del taller.
+ * Es la entidad principal del módulo de Activos e Infraestructura.
+ * * @author Vicente
  * @version 0.0.1
  */
 public class Maquina {
-    
-    // --- Atributos de la Ficha Técnica ---
-    // Encapsulados (private) para garantizar la integridad de los datos.
+
     private int idMaquina;
     private String numeroSerie;
     private String marca;
     private String modelo;
     private int idEstado;
     private Date fechaAdquisicion;
-    
-    // --- Relaciones ---
-    // Representación en Programación Orientada a Objetos de una relación 1:N (Uno a Muchos).
-    // Una máquina puede tener múltiples archivos (manuales, garantías, fotos).
-    private List<ArchivoAdjunto> listaArchivos;
+
+    // --- 1. Constructor Vacío ---
 
     /**
-     * Constructor principal para instanciar máquinas recuperadas de la base de datos.
-     * * @param idMaquina Identificador único (Clave Primaria).
-     * @param numeroSerie Número de serie físico del fabricante.
-     * @param marca Marca de la máquina.
-     * @param modelo Modelo específico.
-     * @param idEstado ID que representa si está operativa, averiada, etc.
-     * @param fechaAdquisicion Fecha en la que el taller compró la máquina.
+     * Constructor vacío por defecto.
+     * Requisito estricto para la instanciación de objetos POJO y uso en frameworks.
+     */
+    public Maquina() {
+    }
+
+    // --- 2. Constructores Parametrizados ---
+
+    /**
+     * Constructor completo con identificador (ID).
+     * Utilizado exclusivamente por el DAO cuando lee un registro ya existente en la base de datos.
+     * * @param idMaquina Identificador numérico único de la máquina (Auto-incremental).
+     * @param numeroSerie Número de serie de fábrica de la máquina.
+     * @param marca Fabricante o marca de la máquina.
+     * @param modelo Modelo comercial de la máquina.
+     * @param idEstado ID que referencia la situación actual (ej. 1=Activa, 2=Mantenimiento).
+     * @param fechaAdquisicion Fecha en la que la máquina fue comprada o dada de alta.
      */
     public Maquina(int idMaquina, String numeroSerie, String marca, String modelo, int idEstado, Date fechaAdquisicion) {
         this.idMaquina = idMaquina;
@@ -49,96 +50,132 @@ public class Maquina {
         this.modelo = modelo;
         this.idEstado = idEstado;
         this.fechaAdquisicion = fechaAdquisicion;
-        
-        // ¡MUY IMPORTANTE! Inicializamos la lista vacía en lugar de dejarla a null.
-        // Esto previene los temidos NullPointerException si intentamos hacer un .size() 
-        // o un .add() antes de cargarle archivos reales desde la base de datos.
-        this.listaArchivos = new ArrayList<>();
     }
 
-    
-    // --- Getters ---
-    // Permiten la lectura de los datos de la máquina desde otras partes de la aplicación.
-    
     /**
-     * Obtiene el identificador único de la máquina.
-     * @return ID de la máquina.
+     * Constructor de inserción (Sin ID).
+     * Se usa al crear una nueva máquina desde la interfaz antes de enviarla a MySQL.
+     * * @param numeroSerie Número de serie de fábrica de la máquina.
+     * @param marca Fabricante o marca de la máquina.
+     * @param modelo Modelo comercial de la máquina.
+     * @param idEstado ID que referencia la situación actual (ej. 1=Activa, 2=Mantenimiento).
+     * @param fechaAdquisicion Fecha en la que la máquina fue comprada o dada de alta.
      */
-    public int getIdMaquina() { 
+    public Maquina(String numeroSerie, String marca, String modelo, int idEstado, Date fechaAdquisicion) {
+        this.numeroSerie = numeroSerie;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.idEstado = idEstado;
+        this.fechaAdquisicion = fechaAdquisicion;
+    }
+
+    // --- 3. Getters y Setters ---
+
+    /**
+     * Obtiene el ID único de la base de datos.
+     * @return El identificador de la máquina.
+     */
+    public int getIdMaquina() {
         return idMaquina;
     }
-    
+
     /**
-     * Obtiene el número de serie de la máquina.
-     * @return Número de serie.
+     * Establece el ID único de la máquina.
+     * @param idMaquina El identificador a asignar.
      */
-    public String getNumeroSerie() { 
+    public void setIdMaquina(int idMaquina) {
+        this.idMaquina = idMaquina;
+    }
+
+    /**
+     * Obtiene el número de serie asignado por el fabricante.
+     * @return Cadena de texto con el número de serie.
+     */
+    public String getNumeroSerie() {
         return numeroSerie;
     }
-    
+
     /**
-     * Obtiene la marca de la máquina.
-     * @return Marca de la máquina.
+     * Define el número de serie de la máquina.
+     * @param numeroSerie El texto del número de serie.
      */
-    public String getMarca() { 
-        return marca; 
+    public void setNumeroSerie(String numeroSerie) {
+        this.numeroSerie = numeroSerie;
     }
-    
+
     /**
-     * Obtiene el modelo de la máquina.
-     * @return Modelo de la máquina.
+     * Obtiene la marca o fabricante del activo.
+     * @return La marca comercial.
      */
-    public String getModelo() { 
-        return modelo; 
+    public String getMarca() {
+        return marca;
     }
-    
+
     /**
-     * Obtiene el identificador del estado de la máquina.
-     * @return ID del estado.
+     * Define la marca fabricante de la máquina.
+     * @param marca Nombre del fabricante.
      */
-    public int getIdEstado() { 
-        return idEstado; 
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
-    
+
     /**
-     * Obtiene la fecha de adquisición de la máquina.
-     * @return Fecha de adquisición.
+     * Obtiene el modelo comercial de la máquina.
+     * @return El modelo especificado.
      */
-    public Date getFechaAdquisicion() { 
+    public String getModelo() {
+        return modelo;
+    }
+
+    /**
+     * Define el modelo comercial de la máquina.
+     * @param modelo Texto del modelo.
+     */
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    /**
+     * Obtiene el ID de la tabla de estados que define la situación de la máquina.
+     * @return Entero que representa el estado.
+     */
+    public int getIdEstado() {
+        return idEstado;
+    }
+
+    /**
+     * Asigna un nuevo ID de estado a la máquina.
+     * @param idEstado El identificador del estado (ej. Operativa, Averiada).
+     */
+    public void setIdEstado(int idEstado) {
+        this.idEstado = idEstado;
+    }
+
+    /**
+     * Obtiene la fecha oficial de adquisición de la maquinaria.
+     * @return Objeto Date con la fecha.
+     */
+    public Date getFechaAdquisicion() {
         return fechaAdquisicion;
     }
-        
-    /**
-     * Obtiene la lista de archivos adjuntos vinculados a la máquina.
-     * @return Lista de archivos adjuntos.
-     */
-    public List<ArchivoAdjunto> getListaArchivos() { 
-        return listaArchivos; 
-    }
-    
-    // --- Setters ---
-    // Fíjate que de forma deliberada NO hay setters para marca, modelo o numSerie.
-    // Una máquina física no cambia de marca ni de número de serie mágicamente, 
-    // por lo que restringimos su modificación para asegurar la consistencia del software.
-    
-    /**
-     * Permite cargar o actualizar la lista de documentos vinculados a esta máquina.
-     * @param listaArchivos Lista completa de objetos ArchivoAdjunto.
-     */
-    public void setListaArchivos(List<ArchivoAdjunto> listaArchivos) {
-        this.listaArchivos = listaArchivos;
-    }
-    
 
-    // --- Métodos Sobrescritos ---
-    
     /**
-     * Sobrescribe toString() para proporcionar una representación visual amigable.
-     * Resulta vital si esta máquina se añade directamente a un JComboBox o JList en la interfaz gráfica.
-     * @return String con formato: "Marca Modelo [NumSerie]"
+     * Establece la fecha de compra o alta del equipo.
+     * @param fechaAdquisicion Fecha a asignar.
+     */
+    public void setFechaAdquisicion(Date fechaAdquisicion) {
+        this.fechaAdquisicion = fechaAdquisicion;
+    }
+
+    // --- 4. Métodos Sobrescritos ---
+
+    /**
+     * Devuelve una cadena de texto formateada con los datos vitales de la máquina.
+     * Muy útil para rellenar listados en menús de consola o interfaces de usuario.
+     * @return String con el ID, Número de Serie, Marca y Modelo.
      */
     @Override
     public String toString() {
-        return marca + " " + modelo + " [" + numeroSerie + "]";
+        return "ID: " + idMaquina + " | SN: " + numeroSerie + " | " + marca + " " + modelo;
     }
 }
