@@ -32,6 +32,14 @@ public class Definiciones {
     /**
      * Constructor completo.
      * Lo uso para crear una definición con todas sus propiedades de un solo golpe.
+     * * @param idDefinicion El ID único de la base de datos.
+     * @param nombre       Nombre de la etiqueta.
+     * @param categoria    Categoría a la que pertenece (ej. "PEDIDOS").
+     * @param codigo       Código corto de identificación.
+     * @param descripcion  Texto explicativo de la definición.
+     * @param ordenVisual  Posición en la que debe aparecer en las listas.
+     * @param activo       Si está disponible para usarse o no.
+     * @param estado       El valor del estado actual.
      */
     public Definiciones(int idDefinicion, String nombre, String categoria, String codigo, 
                         String descripcion, int ordenVisual, boolean activo, String estado) {
