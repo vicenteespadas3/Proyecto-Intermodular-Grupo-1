@@ -63,6 +63,16 @@ public class Proveedor {
         this.emailContacto = emailContacto;
     }
 
+    public Proveedor(int id_proveedor, String nombre, String contacto, String telefono, String email,
+            String direccion) {
+        this.idProveedor = id_proveedor;
+        this.nombre = nombre;
+        this.contacto = contacto; // Faltan estás clases, revisa dbgates o el diagrama
+        this.telefono = telefono;
+        this.emailContacto = email;
+        this.direccion = direccion;
+    }
+
     public Proveedor() {
     }
 

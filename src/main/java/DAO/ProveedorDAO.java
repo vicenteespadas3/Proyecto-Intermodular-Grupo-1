@@ -13,39 +13,52 @@ import Modelo.Proveedor;
 
 /**
  * <h2>Clase ProveedorDAO</h2>
- * Centraliza las operaciones de acceso a datos (CRUD) para la entidad Proveedor.
+ * Centraliza las operaciones de acceso a datos (CRUD) para la entidad
+ * Proveedor.
  * * @see Modelo.Proveedor
+ * 
  * @author Vicente
  * @version 0.0.1
  */
 public class ProveedorDAO {
+    private Connection con;
+
+    public ProveedorDAO(Connection con) {
+        this.con = con;
+    }
 
     /**
      * Inserta un nuevo proveedor en la base de datos.
-     * Utiliza consultas parametrizadas para evitar vulnerabilidades de Inyección SQL.
+     * Utiliza consultas parametrizadas para evitar vulnerabilidades de Inyección
+     * SQL.
+     * 
      * @param p El objeto Proveedor con los datos que queremos insertar.
-     * @return true si la inserción fue correcta (1 o más filas afectadas), false en caso de error.
+     * @return true si la inserción fue correcta (1 o más filas afectadas), false en
+     *         caso de error.
      */
     public boolean insertar(Proveedor p) {
-        // Preparamos la consulta SQL con '?' como marcadores de posición para los valores.
-        // No pasamos el ID porque la base de datos lo genera automáticamente (Auto Incremental).
+        // Preparamos la consulta SQL con '?' como marcadores de posición para los
+        // valores.
+        // No pasamos el ID porque la base de datos lo genera automáticamente (Auto
+        // Incremental).
         String sql = "INSERT INTO proveedores (cif, nombre, telefono, email_contacto) VALUES (?, ?, ?, ?)";
-        
+
         // Bloque try-with-resources: asegura que la conexión y el PreparedStatement
-        // se cierren automáticamente al terminar, evitando fugas de memoria (memory leaks).
+        // se cierren automáticamente al terminar, evitando fugas de memoria (memory
+        // leaks).
         try (Connection conn = ConexionBD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             // Sustituimos los marcadores '?' por los valores reales del objeto Proveedor
             pstmt.setString(1, p.getCif());
             pstmt.setString(2, p.getNombre());
             pstmt.setString(3, p.getTelefono());
             pstmt.setString(4, p.getEmailContacto());
-            
-            // Ejecutamos la consulta. Si executeUpdate() devuelve > 0, significa que 
+
+            // Ejecutamos la consulta. Si executeUpdate() devuelve > 0, significa que
             // la fila se ha guardado correctamente en la tabla.
             return pstmt.executeUpdate() > 0;
-            
+
         } catch (SQLException e) {
             // Si hay un error (ej. CIF duplicado o base de datos apagada), lo capturamos
             System.err.println("Error al insertar proveedor: " + e.getMessage());
@@ -55,42 +68,70 @@ public class ProveedorDAO {
 
     /**
      * Recupera todos los proveedores registrados en la base de datos.
-     * Convierte cada registro (fila) de la tabla en un objeto de la clase Proveedor.
-     * @return Una lista (List) de objetos Proveedor. Si no hay datos, devuelve una lista vacía.
+     * Convierte cada registro (fila) de la tabla en un objeto de la clase
+     * Proveedor.
+     * 
+     * @return Una lista (List) de objetos Proveedor. Si no hay datos, devuelve una
+     *         lista vacía.
      */
     public List<Proveedor> listarTodos() {
         // Instanciamos la lista donde almacenaremos los resultados
         List<Proveedor> listaProveedores = new ArrayList<>();
-        
+
         // Consulta SQL básica para obtener todas las columnas de todos los proveedores
         String sql = "SELECT * FROM proveedores";
-        
-        // Usamos try-with-resources anidando la creación del Statement y la ejecución del ResultSet
+
+        // Usamos try-with-resources anidando la creación del Statement y la ejecución
+        // del ResultSet
         try (Connection conn = ConexionBD.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) { // El ResultSet contiene la "tabla" devuelta por la BD
-            
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) { // El ResultSet contiene la "tabla" devuelta por la BD
+
             // Recorremos el ResultSet iterando fila por fila mientras existan resultados
             while (rs.next()) {
-                // Instanciamos un nuevo objeto Proveedor mapeando las columnas de la BD a los atributos de la clase
+                // Instanciamos un nuevo objeto Proveedor mapeando las columnas de la BD a los
+                // atributos de la clase
                 Proveedor p = new Proveedor(
-                    rs.getInt("id_proveedor"),
-                    rs.getString("cif"),
-                    rs.getString("nombre"),
-                    rs.getString("telefono"),
-                    rs.getString("email_contacto")
-                );
-                
+                        rs.getInt("id_proveedor"),
+                        rs.getString("cif"),
+                        rs.getString("nombre"),
+                        rs.getString("telefono"),
+                        rs.getString("email_contacto"));
+
                 // Añadimos el proveedor recién mapeado a nuestra lista
                 listaProveedores.add(p);
             }
-            
+
         } catch (SQLException e) {
             // Capturamos cualquier error de lectura o conexión
             System.err.println("Error al listar proveedores: " + e.getMessage());
         }
-        
+
         // Retornamos la lista final (lista con datos o vacía si falló)
         return listaProveedores;
+    }
+
+    public Proveedor buscarPorId(int id) {
+        Proveedor proveedor = null;
+        String sql = "SELECT * FROM proveedores_maquinas WHERE id_proveedor = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Proveedor(
+                            rs.getInt("id_proveedor"),
+                            rs.getString("nombre"), // Coincide
+                            rs.getString("contacto"), // Antes tenías "dni", cámbialo a "contacto"
+                            rs.getString("telefono"), // Coincide
+                            rs.getString("email"), // Coincide
+                            rs.getString("direccion") // Añadido (según tu imagen)
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar proveedor: " + e.getMessage());
+        }
+        return proveedor;
     }
 }
