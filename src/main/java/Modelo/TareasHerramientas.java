@@ -10,11 +10,13 @@ import java.util.Objects;
  * <h2>Clase TareasHerramientas</h2>
  * Representa la cantidad de herramientas que se usan en una tarea de mantenimiento en el sistema
  * Esta clase se relaciona con la tabla tareas_herramientas de la base de datos
- * Esta clase se compone de los siguientes atributos
+ * Esta clase se compone de los siguientes atributos:
  * <ul>
- *  <li></li>
+ *  <li>id_tareas_herramientas</li>
+ *  <li>herramientas</li>
+ *  <li>cantidad</li>
  * </ul>
- * @see TareasHerramientasDAO
+ * @see DAO.TareasHerramientasDAO
  * @author Miguel Ángel Sánchez Martínez
  * @version 0.0.1
  */
@@ -48,22 +50,42 @@ public class TareasHerramientas {
     }
     
     //Getters
+    /**
+     * Obtiene el ID de la relación tarea-herramienta.
+     * @return ID de la relación.
+     */
     public int getId_tareas_herramientas() {
         return id_tareas_herramientas;
     }
 
+    /**
+     * Obtiene la herramienta utilizada.
+     * @return Objeto Herramientas.
+     */
     public Herramientas getHerramienta() {
         return herramienta;
     }
 
+    /**
+     * Obtiene la cantidad de herramientas utilizadas.
+     * @return Cantidad.
+     */
     public int getCantidad() {
         return cantidad;
     }
     //Setters
+    /**
+     * Establece la herramienta utilizada.
+     * @param herramienta Objeto Herramientas.
+     */
     public void setHerramienta(Herramientas herramienta) {
         this.herramienta = herramienta;
     }
 
+    /**
+     * Establece la cantidad de herramientas utilizadas.
+     * @param cantidad Cantidad.
+     */
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }

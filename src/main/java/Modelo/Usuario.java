@@ -1,51 +1,75 @@
 package Modelo;
 
-/**
- * Clase que representa un usuario dentro del sistema CMMS.
- * Almacena la información de identidad, contacto y permisos del personal.
- * * @author Guadalupe M.G.M
- * @version 1.0
- */
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Clase que representa un usuario del sistema CMMS.
- * Incluye información básica y métodos de validación simples.
+ * Clase Usuario - Sistema CMMS
+ * Esta clase sirve para guardar toda la info de los trabajadores.
+ * La idea es tener aquí sus datos personales, su seguridad y 
+ * saber qué incidencias tienen asignadas.
+ * * @see DAO.UsuarioDAO
+ * @author Guadalupe M.G.M (Equipo 1)
+ * @version 1.0.0
+ * @since 2026
  */
-
 public class Usuario {
 
+    // Atributos básicos que pide el diagrama
     private int idUsuario;
     private String nombre;
+    private String apellidos;
     private String email;
+    private String password; // Aquí guardamos el hash para que sea seguro
     private String rol;
+    
+    // Estos son para llevar el control de cuándo entran al sistema
+    private LocalDateTime fechaCreacion;
+    private LocalDateTime ultimoAcceso;
+    
+    // Lista para guardar los códigos de las incidencias que le tocan
+    private List<String> listIncidencias;
 
     /**
-     * Constructor por defecto.
-     * Crea una instancia de Usuario con atributos sin inicializar.
+     * Constructor vacío.
+     * Lo uso más que nada cuando necesito crear un usuario desde cero 
+     * o para que el DAO lo llene después.
      */
-    public Usuario() {}
-
-    /**
-     * Constructor con parámetros para inicializar un usuario completo.
-     * * @param idUsuario Identificador único del usuario.
-     * @param nombre    Nombre completo del usuario.
-     * @param email     Dirección de correo electrónico.
-     * @param rol       Cargo o nivel de acceso (ej. "admin", "tecnico").
-     */
-    public Usuario(int idUsuario, String nombre, String email, String rol) {
-        this.idUsuario = idUsuario;
-        this.nombre = nombre;
-        this.email = email;
-        this.rol = rol;
+    public Usuario() {
+        this.listIncidencias = new ArrayList<>();
+        this.fechaCreacion = LocalDateTime.now(); // Ponemos la fecha de hoy por defecto
     }
 
-    // =========================
-    // VALIDACIONES BÁSICAS
-    // =========================
+    /**
+     * Constructor lleno.
+     * Este lo uso cuando ya tengo los datos (por ejemplo, al traerlos de la BD).
+     */
+    public Usuario(int idUsuario, String nombre, String apellidos, String email, String rol, LocalDateTime fechaCreacion) {
+        this.idUsuario = idUsuario;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.rol = rol;
+        this.fechaCreacion = fechaCreacion;
+        this.listIncidencias = new ArrayList<>();
+    }
+
+    // ==========================================
+    // MÉTODOS PARA QUE TODO FUNCIONE (LÓGICA)
+    // ==========================================
 
     /**
-     * Verifica si el usuario tiene datos mínimos válidos para ser procesado.
-     * * @return {@code true} si el nombre no está vacío y el email contiene un formato básico.
+     * Este método ayuda al UPDATE del DAO.
+     * Solo actualiza la fecha de último acceso a "ahora mismo".
+     */
+    public void registrarAcceso() {
+        this.ultimoAcceso = LocalDateTime.now();
+    }
+
+    /**
+     * Validación rápida antes de hacer un CREATE.
+     * Revisa que el nombre no esté vacío y que el email tenga un @.
      */
     public boolean esValido() {
         return nombre != null && !nombre.trim().isEmpty()
@@ -53,68 +77,50 @@ public class Usuario {
     }
 
     /**
-     * Comprueba si el usuario posee privilegios de administrador.
-     * * @return {@code true} si el rol es "admin", ignorando mayúsculas y minúsculas.
+     * Para ir metiendo incidencias a la lista sin borrar las anteriores.
      */
-    public boolean esAdmin() {
-        return rol != null && rol.equalsIgnoreCase("admin");
-    }
-
-    // =========================
-    // GETTERS Y SETTERS
-    // =========================
-
-    /** @return El identificador único del usuario. */
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    /** @param idUsuario El nuevo identificador a asignar. */
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    /** @return El nombre del usuario. */
-    public String getNombre() {
-        return nombre;
-    }
-
-    /** @param nombre El nombre completo a asignar. */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    /** @return La dirección de correo electrónico. */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Establece el email solo si contiene un formato válido básico.
-     * * @param email El correo electrónico a validar y asignar.
-     */
-    public void setEmail(String email) {
-        if (email != null && email.contains("@")) {
-            this.email = email;
+    public void agregarIncidencia(String codigo) {
+        if (codigo != null) {
+            this.listIncidencias.add(codigo);
         }
     }
 
-    /** @return El rol o cargo actual del usuario. */
-    public String getRol() {
-        return rol;
-    }
+    // ==========================================
+    // GETTERS Y SETTERS (Para entrar y salir de los datos)
+    // ==========================================
 
-    /** @param rol El nuevo rol a asignar (ej. "admin", "operador"). */
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
+    public int getIdUsuario() { return idUsuario; }
+    public void setIdUsuario(int idUsuario) { this.idUsuario = idUsuario; }
+
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public String getApellidos() { return apellidos; }
+    public void setApellidos(String apellidos) { this.apellidos = apellidos; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getRol() { return rol; }
+    public void setRol(String rol) { this.rol = rol; }
+
+    public LocalDateTime getFechaCreacion() { return fechaCreacion; }
+    public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
+
+    public LocalDateTime getUltimoAcceso() { return ultimoAcceso; }
+    public void setUltimoAcceso(LocalDateTime ultimoAcceso) { this.ultimoAcceso = ultimoAcceso; }
+
+    public List<String> getListIncidencias() { return listIncidencias; }
+    public void setListIncidencias(List<String> listIncidencias) { this.listIncidencias = listIncidencias; }
 
     /**
-     * Retorna una representación en texto del usuario.
-     * * @return String con el formato "Nombre (Rol)".
+     * Para imprimir los datos del usuario de forma bonita.
      */
     @Override
     public String toString() {
-        return nombre + " (" + rol + ")";
+        return "ID: " + idUsuario + " | " + nombre + " " + apellidos + " [" + rol + "]";
     }
 }

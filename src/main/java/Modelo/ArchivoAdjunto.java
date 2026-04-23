@@ -5,10 +5,13 @@
 package Modelo;
 
 /**
- * Clase de entidad (Modelo/POJO) que representa un documento técnico o imagen.
- * Sirve para mapear los registros de la tabla 'archivos_adjuntos' y manejarlos 
- * de forma orientada a objetos en Java.
+ * <h2>Clase ArchivoAdjunto</h2>
+ * Representa un documento técnico, manual o imagen.
+ * Se encarga de gestionar las rutas físicas de los ficheros vinculados
+ * a la maquinaria pesada del taller.
+ * * @see DAO.ArchivoAdjuntoDAO
  * @author Vicente
+ * @version 0.0.1
  */
 public class ArchivoAdjunto {
     
@@ -44,22 +47,42 @@ public class ArchivoAdjunto {
     // --- Getters ---
     // Métodos de acceso para leer la información del archivo desde otras clases.
     
+    /**
+     * Obtiene el identificador único del archivo.
+     * @return ID del archivo.
+     */
     public int getIdArchivo() {
         return idArchivo;
     }
     
+    /**
+     * Obtiene el nombre del archivo.
+     * @return Nombre del archivo.
+     */
     public String getNombre() { 
         return nombre; 
     }
     
+    /**
+     * Obtiene la ruta de almacenamiento del archivo.
+     * @return Ruta del archivo.
+     */
     public String getRuta() { 
         return ruta; 
     }
     
+    /**
+     * Obtiene el tipo o extensión del archivo.
+     * @return Tipo de archivo.
+     */
     public String getTipo() { 
         return tipo;
     }
     
+    /**
+     * Obtiene el ID de la máquina asociada al archivo.
+     * @return ID de la máquina.
+     */
     public int getIdMaquina() { 
         return idMaquina;
     }
