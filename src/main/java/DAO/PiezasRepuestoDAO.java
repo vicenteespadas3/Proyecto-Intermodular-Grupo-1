@@ -39,7 +39,7 @@ public class PiezasRepuestoDAO {
                 if (rs.next()) {
                     pieza = new PiezasRepuesto();
                     pieza.setIdPieza(rs.getInt("id_pieza"));
-                    pieza.setNombre(rs.getString("nombre_pieza"));
+                    pieza.setNombre(rs.getString("nombre"));
                     // Añade aquí más campos si los tienes (marca, stock, etc.)
                 }
             }
