@@ -59,8 +59,7 @@ public class Main {
                     break;
                 case "3":
                     // Devuelve true si el usuario pulsó "9" para salir completamente
-                    MenuCompras menuCompras = new MenuCompras();
-                    menuCompras.menuMiguelAngel(conexionGlobal);
+                    salir = MenuCompras.menuMiguelAngel(conexionGlobal);
                     break;
                 case "0":
                     salir = true;

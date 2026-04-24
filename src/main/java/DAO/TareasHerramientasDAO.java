@@ -3,11 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package DAO;
+
 import java.sql.Connection;
 
 /**
  * <h2>Clase TareasHerramientasDAO</h2>
- * Clase encargada de ser la intermediaria entre el modelo(TareasHerramientas) y la base de datos.
+ * Clase encargada de ser la intermediaria entre el modelo(TareasHerramientas) y
+ * la base de datos.
  * Gestiona la relación entre tareas de mantenimiento y herramientas utilizadas.
  * 
  * @see Modelo.TareasHerramientas
@@ -15,14 +17,12 @@ import java.sql.Connection;
  * @version 0.0.1
  */
 public class TareasHerramientasDAO {
-    
-    private Connection con;
 
     /**
      * Constructor que recibe una conexión a la base de datos.
+     * 
      * @param con Conexión activa.
      */
     public TareasHerramientasDAO(Connection con) {
-        this.con = con;
     }
 }

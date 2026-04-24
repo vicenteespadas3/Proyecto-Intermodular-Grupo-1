@@ -4,7 +4,6 @@
  */
 package DAO;
 
-import Modelo.Definiciones;
 import Modelo.PedidosCompra;
 import Modelo.PedidosDetalle;
 import Modelo.Proveedor;
