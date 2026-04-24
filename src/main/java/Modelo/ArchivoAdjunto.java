@@ -1,104 +1,214 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
+
+import java.util.Date;
 
 /**
  * <h2>Clase ArchivoAdjunto</h2>
- * Representa un documento técnico, manual o imagen.
- * Se encarga de gestionar las rutas físicas de los ficheros vinculados
- * a la maquinaria pesada del taller.
- * * @see DAO.ArchivoAdjuntoDAO
- * @author Vicente
+ * Representa un documento, manual o imagen en el sistema.
+ * Utiliza un diseño polimórfico (tipo_referencia e id_referencia) para poder 
+ * vincular el archivo a cualquier otra entidad (Máquinas, Incidencias, Proveedores...).
+ * Mapea exactamente con la tabla 'archivos_adjuntos' de la BD.
+ * * @author Equipo 1
  * @version 0.0.1
  */
 public class ArchivoAdjunto {
-    
-    // --- Atributos ---
-    // Variables privadas para encapsular la información del archivo.
+
+    /** Identificador único autonumérico del archivo (PK). */
     private int idArchivo;
-    private String nombre;
-    private String ruta;
-    private String tipo;
     
-    // Este atributo actúa como la "Clave Foránea" (Foreign Key) en el mundo de los objetos,
-    // permitiendo saber a qué máquina exacta pertenece este documento.
-    private int idMaquina;
+    /** Define a qué entidad pertenece el archivo (ej. "maquina", "incidencia"). */
+    private String tipoReferencia;
     
+    /** ID de la entidad a la que pertenece (ej. el ID de la máquina concreta). */
+    private int idReferencia;
+    
+    /** Nombre completo del documento, incluyendo extensión (varchar 300). */
+    private String nombreArchivo;
+    
+    /** Ruta física o enlace donde está guardado el archivo (varchar 500). */
+    private String rutaArchivo;
+    
+    /** Fecha y hora exacta en la que se subió al sistema (datetime). */
+    private Date fechaSubida;
+    
+    /** ID del usuario/trabajador que subió el archivo (FK a tabla usuarios). */
+    private int idUsuarioSubida;
+
+    // --- 1. Constructor Vacío ---
+
     /**
-     * Constructor para instanciar un archivo recuperado de la base de datos o
-     * para preparar uno nuevo antes de enviarlo al DAO.
-     * * @param idArchivo Identificador único del archivo.
-     * @param nombre Nombre visible del documento (ej. "Manual_Uso").
-     * @param ruta Ubicación física o URL donde está guardado el archivo.
-     * @param tipo Extensión o categoría del archivo (ej. "PDF", "JPG").
-     * @param idMaquina ID de la máquina a la que está vinculado.
+     * Constructor vacío por defecto.
+     * Obligatorio para la instanciación de objetos POJO y el mapeo de datos de la BD.
      */
-    public ArchivoAdjunto(int idArchivo, String nombre, String ruta, String tipo, int idMaquina) {
-        this.idArchivo = idArchivo;
-        this.nombre = nombre;
-        this.ruta = ruta;
-        this.tipo = tipo;
-        this.idMaquina = idMaquina;
+    public ArchivoAdjunto() {
     }
 
-    
-    // --- Getters ---
-    // Métodos de acceso para leer la información del archivo desde otras clases.
-    
+    // --- 2. Constructores Parametrizados ---
+
+    /**
+     * Constructor completo con ID.
+     * Utilizado exclusivamente por el DAO cuando recupera un documento de MySQL.
+     * * @param idArchivo Identificador único.
+     * @param tipoReferencia Tabla o tipo de entidad vinculada.
+     * @param idReferencia ID de la entidad vinculada.
+     * @param nombreArchivo Nombre y formato del archivo.
+     * @param rutaArchivo Ubicación de almacenamiento.
+     * @param fechaSubida Fecha y hora de subida.
+     * @param idUsuarioSubida ID del usuario creador.
+     */
+    public ArchivoAdjunto(int idArchivo, String tipoReferencia, int idReferencia, 
+                          String nombreArchivo, String rutaArchivo, Date fechaSubida, int idUsuarioSubida) {
+        this.idArchivo = idArchivo;
+        this.tipoReferencia = tipoReferencia;
+        this.idReferencia = idReferencia;
+        this.nombreArchivo = nombreArchivo;
+        this.rutaArchivo = rutaArchivo;
+        this.fechaSubida = fechaSubida;
+        this.idUsuarioSubida = idUsuarioSubida;
+    }
+
+    /**
+     * Constructor de inserción sin ID.
+     * Utilizado al subir un nuevo documento desde la aplicación antes de persistirlo.
+     * * @param tipoReferencia Tabla o tipo de entidad vinculada.
+     * @param idReferencia ID de la entidad vinculada.
+     * @param nombreArchivo Nombre y formato del archivo.
+     * @param rutaArchivo Ubicación de almacenamiento.
+     * @param fechaSubida Fecha y hora de subida.
+     * @param idUsuarioSubida ID del usuario creador.
+     */
+    public ArchivoAdjunto(String tipoReferencia, int idReferencia, String nombreArchivo, 
+                          String rutaArchivo, Date fechaSubida, int idUsuarioSubida) {
+        this.tipoReferencia = tipoReferencia;
+        this.idReferencia = idReferencia;
+        this.nombreArchivo = nombreArchivo;
+        this.rutaArchivo = rutaArchivo;
+        this.fechaSubida = fechaSubida;
+        this.idUsuarioSubida = idUsuarioSubida;
+    }
+
+    // --- 3. Getters y Setters ---
+
     /**
      * Obtiene el identificador único del archivo.
-     * @return ID del archivo.
+     * @return El ID numérico.
      */
     public int getIdArchivo() {
         return idArchivo;
     }
-    
+
     /**
-     * Obtiene el nombre del archivo.
-     * @return Nombre del archivo.
+     * Establece el identificador único del archivo.
+     * @param idArchivo El ID a asignar.
      */
-    public String getNombre() { 
-        return nombre; 
+    public void setIdArchivo(int idArchivo) {
+        this.idArchivo = idArchivo;
     }
-    
+
     /**
-     * Obtiene la ruta de almacenamiento del archivo.
-     * @return Ruta del archivo.
+     * Obtiene el tipo de entidad al que hace referencia (ej. "maquina").
+     * @return String con el tipo de referencia.
      */
-    public String getRuta() { 
-        return ruta; 
+    public String getTipoReferencia() {
+        return tipoReferencia;
     }
-    
+
     /**
-     * Obtiene el tipo o extensión del archivo.
-     * @return Tipo de archivo.
+     * Define el tipo de entidad al que se vincula el archivo.
+     * @param tipoReferencia El texto identificador de la entidad.
      */
-    public String getTipo() { 
-        return tipo;
+    public void setTipoReferencia(String tipoReferencia) {
+        this.tipoReferencia = tipoReferencia;
     }
-    
+
     /**
-     * Obtiene el ID de la máquina asociada al archivo.
-     * @return ID de la máquina.
+     * Obtiene el ID de la entidad vinculada.
+     * @return ID numérico de la referencia.
      */
-    public int getIdMaquina() { 
-        return idMaquina;
+    public int getIdReferencia() {
+        return idReferencia;
     }
-    
-    // ¡OJO! No incluimos Setters (setNombre, setRuta...). 
-    // Un archivo adjunto, una vez subido y registrado, se considera "Inmutable" en este contexto.
-    // Si un archivo cambia, físicamente es un archivo distinto, por lo que se borraría el viejo 
-    // y se insertaría uno nuevo en lugar de modificar sus rutas en memoria.
-    
+
     /**
-     * Sobrescribe toString() para mostrar el archivo de forma amigable en la Interfaz Gráfica.
-     * Si ponemos una lista de ArchivoAdjunto en un JList, esto es lo que leerá el usuario.
-     * * @return Cadena con formato: "NombreDelArchivo (Tipo)"
+     * Define el ID de la entidad a vincular.
+     * @param idReferencia El ID a asignar.
+     */
+    public void setIdReferencia(int idReferencia) {
+        this.idReferencia = idReferencia;
+    }
+
+    /**
+     * Obtiene el nombre completo del archivo.
+     * @return Nombre del documento.
+     */
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
+
+    /**
+     * Define el nombre del documento.
+     * @param nombreArchivo El nombre a asignar.
+     */
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
+    }
+
+    /**
+     * Obtiene la ruta física o lógica de almacenamiento.
+     * @return String con la ruta.
+     */
+    public String getRutaArchivo() {
+        return rutaArchivo;
+    }
+
+    /**
+     * Define la ruta de almacenamiento.
+     * @param rutaArchivo Ruta a asignar.
+     */
+    public void setRutaArchivo(String rutaArchivo) {
+        this.rutaArchivo = rutaArchivo;
+    }
+
+    /**
+     * Obtiene la fecha y hora de subida del archivo.
+     * @return Objeto Date con el Timestamp.
+     */
+    public Date getFechaSubida() {
+        return fechaSubida;
+    }
+
+    /**
+     * Establece la fecha de subida.
+     * @param fechaSubida Objeto Date a asignar.
+     */
+    public void setFechaSubida(Date fechaSubida) {
+        this.fechaSubida = fechaSubida;
+    }
+
+    /**
+     * Obtiene el ID del usuario que subió el archivo.
+     * @return ID numérico del usuario.
+     */
+    public int getIdUsuarioSubida() {
+        return idUsuarioSubida;
+    }
+
+    /**
+     * Asigna el ID del usuario responsable de la subida.
+     * @param idUsuarioSubida ID a asignar.
+     */
+    public void setIdUsuarioSubida(int idUsuarioSubida) {
+        this.idUsuarioSubida = idUsuarioSubida;
+    }
+
+    // --- 4. Métodos Sobrescritos ---
+
+    /**
+     * Devuelve una cadena de texto representativa del documento.
+     * @return Cadena formateada con el nombre y su vínculo.
      */
     @Override
     public String toString() {
-        return nombre + " (" + tipo + ")";
+        return "[DOC] " + nombreArchivo + " -> Vinculado a " + tipoReferencia + " (ID: " + idReferencia + ")";
     }
 }

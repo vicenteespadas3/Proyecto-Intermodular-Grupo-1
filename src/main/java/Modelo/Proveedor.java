@@ -1,167 +1,189 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
 
 /**
  * <h2>Clase Proveedor</h2>
- * Representa la entidad de un proveedor o suministrador del taller.
- * Esta clase mapea la estructura de la base de datos y es fundamental
- * para el módulo de compras y aprovisionamiento.
- * * @see DAO.ProveedorDAO
- * 
- * @author Vicente
+ * Representa la entidad de un proveedor, empresa o persona física que suministra
+ * maquinaria, activos o piezas de repuesto al taller.
+ * Esta clase mapea de forma exacta la estructura de la tabla 'proveedores_maquinas' de MySQL.
+ * * @author Equipo 1
  * @version 0.0.1
  */
 public class Proveedor {
 
-    // --- Atributos ---
-    // Se declaran como 'private' para cumplir con el principio de Encapsulamiento,
-    // protegiendo los datos para que solo puedan modificarse mediante sus métodos
-    // Setters.
+    /** Identificador numérico único del proveedor (int, PK). */
     private int idProveedor;
-    private String cif;
+    
+    /** Nombre fiscal o comercial de la empresa proveedora (varchar 200). */
     private String nombre;
+    
+    /** Nombre de la persona física de referencia o comercial (varchar 150). */
+    private String contacto;
+    
+    /** Número de teléfono de contacto (varchar 20). */
     private String telefono;
-    private String emailContacto;
+    
+    /** Correo electrónico principal del proveedor (varchar 200). */
+    private String email;
+    
+    /** Ubicación física, calle o sede de la empresa (varchar 300). */
+    private String direccion;
+
+    // --- 1. Constructor Vacío ---
 
     /**
-     * Constructor completo.
-     * Se utiliza principalmente desde el ProveedorDAO para instanciar objetos
-     * con los datos que ya existen y se han recuperado de la base de datos.
-     * * @param idProveedor Identificador único (Clave Primaria).
-     * 
-     * @param cif           Código de Identificación Fiscal.
-     * @param nombre        Nombre de la empresa proveedora.
-     * @param telefono      Teléfono de contacto.
-     * @param emailContacto Correo electrónico del proveedor.
+     * Constructor vacío por defecto.
+     * Requisito fundamental para la creación de objetos POJO, serialización 
+     * y uso genérico en estructuras de datos.
      */
-    public Proveedor(int idProveedor, String cif, String nombre, String telefono, String emailContacto) {
-        this.idProveedor = idProveedor;
-        this.cif = cif;
-        this.nombre = nombre;
-        this.telefono = telefono;
-        this.emailContacto = emailContacto;
-    }
-
-    /**
-     * Constructor sobrecargado sin el ID.
-     * Se utiliza desde la Interfaz Gráfica cuando un usuario va a dar de alta
-     * un proveedor nuevo. Como el ID es Auto-Incremental en la BD, no lo conocemos
-     * aún.
-     * 
-     * @param cif           Código de Identificación Fiscal.
-     * @param nombre        Nombre de la empresa proveedora.
-     * @param telefono      Teléfono de contacto.
-     * @param emailContacto Correo electrónico del proveedor.
-     */
-    public Proveedor(String cif, String nombre, String telefono, String emailContacto) {
-        this.cif = cif;
-        this.nombre = nombre;
-        this.telefono = telefono;
-        this.emailContacto = emailContacto;
-    }
-
-    public Proveedor(int id_proveedor, String nombre, String contacto, String telefono, String email,
-            String direccion) {
-        this.idProveedor = id_proveedor;
-        this.nombre = nombre;
-        this.contacto = contacto; // Faltan estás clases, revisa dbgates o el diagrama
-        this.telefono = telefono;
-        this.emailContacto = email;
-        this.direccion = direccion;
-    }
-
     public Proveedor() {
     }
 
-    // --- Getters y Setters ---
-    // Métodos de acceso público para interactuar con los atributos privados.
+    // --- 2. Constructores Parametrizados ---
 
     /**
-     * Establece el ID del proveedor.
-     * 
-     * @param idProveedor ID del proveedor.
+     * Constructor completo con identificador (ID).
+     * Utilizado exclusivamente por el DAO cuando recupera un registro existente de la base de datos.
+     * * @param idProveedor Identificador numérico único del proveedor (Auto-incremental en BD).
+     * @param nombre Nombre fiscal o comercial de la empresa proveedora.
+     * @param contacto Nombre de la persona física de referencia o comercial.
+     * @param telefono Número de teléfono de contacto.
+     * @param email Correo electrónico principal del proveedor.
+     * @param direccion Ubicación física, calle o sede de la empresa.
      */
-    public void setId_proveedor(int idProveedor) {
+    public Proveedor(int idProveedor, String nombre, String contacto, String telefono, String email, String direccion) {
         this.idProveedor = idProveedor;
+        this.nombre = nombre;
+        this.contacto = contacto;
+        this.telefono = telefono;
+        this.email = email;
+        this.direccion = direccion;
     }
 
     /**
-     * Obtiene el ID del proveedor.
-     * 
-     * @return ID del proveedor.
+     * Constructor de inserción (Sin ID).
+     * Se usa al crear un nuevo proveedor desde la interfaz antes de guardarlo en MySQL.
+     * La base de datos se encargará de generar su ID correspondiente.
+     * * @param nombre Nombre fiscal o comercial de la empresa proveedora.
+     * @param contacto Nombre de la persona física de referencia o comercial.
+     * @param telefono Número de teléfono de contacto.
+     * @param email Correo electrónico principal del proveedor.
+     * @param direccion Ubicación física, calle o sede de la empresa.
+     */
+    public Proveedor(String nombre, String contacto, String telefono, String email, String direccion) {
+        this.nombre = nombre;
+        this.contacto = contacto;
+        this.telefono = telefono;
+        this.email = email;
+        this.direccion = direccion;
+    }
+
+    // --- 3. Getters y Setters ---
+
+    /**
+     * Obtiene el ID único asignado por la base de datos.
+     * @return El identificador numérico del proveedor.
      */
     public int getIdProveedor() {
         return idProveedor;
     }
 
     /**
-     * Obtiene el CIF del proveedor.
-     * 
-     * @return CIF del proveedor.
+     * Establece el ID único del proveedor.
+     * @param idProveedor El identificador a asignar.
      */
-    public String getCif() {
-        return cif;
+    public void setIdProveedor(int idProveedor) {
+        this.idProveedor = idProveedor;
     }
 
     /**
-     * Obtiene el nombre del proveedor.
-     * 
-     * @return Nombre del proveedor.
+     * Obtiene el nombre comercial de la empresa proveedora.
+     * @return Cadena de texto con el nombre.
      */
     public String getNombre() {
         return nombre;
     }
 
     /**
-     * Obtiene el teléfono del proveedor.
-     * 
-     * @return Teléfono del proveedor.
+     * Define el nombre de la empresa proveedora.
+     * @param nombre El nombre comercial o fiscal.
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    /**
+     * Obtiene el nombre de la persona de contacto.
+     * @return Nombre del responsable o comercial.
+     */
+    public String getContacto() {
+        return contacto;
+    }
+
+    /**
+     * Define a la persona física de referencia.
+     * @param contacto Nombre de la persona de contacto.
+     */
+    public void setContacto(String contacto) {
+        this.contacto = contacto;
+    }
+
+    /**
+     * Obtiene el número de teléfono del proveedor.
+     * @return Texto con el número de teléfono.
      */
     public String getTelefono() {
         return telefono;
     }
 
     /**
-     * Obtiene el email de contacto del proveedor.
-     * 
-     * @return Email de contacto.
-     */
-    public String getEmailContacto() {
-        return emailContacto;
-    }
-
-    // Nota: Solo creamos setters para los campos que tiene sentido modificar
-    // en la vida real. Un CIF o un ID no deberían cambiar, pero el teléfono sí.
-    /**
-     * Establece el teléfono del proveedor.
-     * 
-     * @param telefono Nuevo teléfono.
+     * Establece el número de teléfono del proveedor.
+     * @param telefono El teléfono a asignar.
      */
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
     /**
-     * Establece el email de contacto del proveedor.
-     * 
-     * @param emailContacto Nuevo email.
+     * Obtiene el correo electrónico de contacto.
+     * @return Dirección de email.
      */
-    public void setEmailContacto(String emailContacto) {
-        this.emailContacto = emailContacto;
+    public String getEmail() {
+        return email;
     }
 
     /**
-     * Sobrescribimos el método toString() heredado de la clase Object.
-     * Es de gran utilidad para que, si metemos el objeto en un ComboBox o Lista
-     * visual (JavaFX/Swing),
-     * el usuario lea texto comprensible y no la dirección de memoria del objeto.
-     * * @return Una cadena formateada con el nombre y el CIF.
+     * Establece el correo electrónico del proveedor.
+     * @param email La dirección de email a asignar.
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Obtiene la dirección física o sede del proveedor.
+     * @return Texto con la dirección completa.
+     */
+    public String getDireccion() {
+        return direccion;
+    }
+
+    /**
+     * Define la dirección física de la empresa.
+     * @param direccion Calle, número, código postal, etc.
+     */
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    // --- 4. Métodos Sobrescritos ---
+
+    /**
+     * Proporciona una representación textual resumida del proveedor.
+     * Facilita la visualización en listados de consola o desplegables en interfaces gráficas.
+     * @return Una cadena que muestra el nombre de la empresa y la persona de contacto.
      */
     @Override
     public String toString() {
-        return nombre + " (" + cif + ")";
+        return nombre + " (Contacto: " + contacto + ")";
     }
 }

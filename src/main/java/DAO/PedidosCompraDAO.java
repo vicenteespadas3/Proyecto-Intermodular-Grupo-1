@@ -4,7 +4,6 @@
  */
 package DAO;
 
-import Modelo.Definiciones;
 import Modelo.PedidosCompra;
 import Modelo.PedidosDetalle;
 import Modelo.Proveedor;
@@ -152,6 +151,59 @@ public class PedidosCompraDAO {
         return listaPedidos;
     }
 
+    public boolean eliminarPedidoCompleto(int idPedido) {
+        // Consultas necesarias
+        String sqlDetalles = "DELETE FROM pedidos_detalle WHERE id_pedido = ?";
+        String sqlPedido = "DELETE FROM pedidos_compra WHERE id_pedido = ?";
+
+        try {
+            // 1. Borramos los detalles primero para evitar el RESTRICT
+            try (PreparedStatement psDet = con.prepareStatement(sqlDetalles)) {
+                psDet.setInt(1, idPedido);
+                psDet.executeUpdate();
+                System.out.println("Detalles del pedido " + idPedido + " eliminados.");
+            }
+
+            // 2. Ahora que el pedido está "solo", lo borramos a él
+            try (PreparedStatement psPed = con.prepareStatement(sqlPedido)) {
+                psPed.setInt(1, idPedido);
+                int filas = psPed.executeUpdate();
+                if (filas > 0) {
+                    System.out.println("Pedido " + idPedido + " eliminado correctamente.");
+                }
+            }
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // --------Métodos de Actualizar-----------
+    public boolean actualizarEstado(int idPedido, int nuevoEstadoId) {
+        String sql = "UPDATE pedidos_compra SET id_estado = ? WHERE id_pedido = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, nuevoEstadoId);
+            ps.setInt(2, idPedido);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar estado: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean actualizarRecepcion(int idDetalle, int cantRecibida) {
+        String sql = "UPDATE pedidos_detalle SET cantidad_recibida = ? WHERE id_detalle = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, cantRecibida);
+            ps.setInt(2, idDetalle);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar cantidad: " + e.getMessage());
+            return false;
+        }
+    }
+
     /**
      * Método auxiliar para obtener las líneas de un pedido específico
      */
@@ -165,12 +217,15 @@ public class PedidosCompraDAO {
 
             while (rs.next()) {
                 PedidosDetalle linea = new PedidosDetalle();
+                linea.setIdDetalle(rs.getInt("id_detalle"));
                 linea.setCantidad_solicitada(rs.getInt("cantidad_solicitada"));
+                linea.setCantidad_recibida(rs.getInt("cantidad_recibida"));
                 linea.setPrecio_unitario(rs.getDouble("precio_unitario"));
 
                 // Cargar la pieza (necesitas el objeto Pieza completo para la tabla)
+                int idPieza = rs.getInt("id_pieza");
                 PiezasRepuestoDAO piezaDAO = new PiezasRepuestoDAO(this.con);
-                linea.setPieza(piezaDAO.buscarPorId(rs.getInt("id_pieza")));
+                linea.setPieza(piezaDAO.buscarPorId(idPieza));
 
                 detalles.add(linea);
             }

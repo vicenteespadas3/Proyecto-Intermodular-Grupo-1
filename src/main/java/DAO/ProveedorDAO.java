@@ -1,137 +1,172 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAO;
 
-// Importaciones necesarias para operaciones de base de datos y manejo de listas
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import PckConexionBD.ConexionBD;
 import Modelo.Proveedor;
+import PckConexionBD.ConexionBD;
 
 /**
  * <h2>Clase ProveedorDAO</h2>
- * Centraliza las operaciones de acceso a datos (CRUD) para la entidad
- * Proveedor.
- * * @see Modelo.Proveedor
- * 
- * @author Vicente
+ * Centraliza las operaciones CRUD (Crear, Leer, Actualizar, Borrar) para la tabla 'proveedores_maquinas'.
+ * Incluye un sistema de recuperación en RAM y constructores de inyección de dependencias 
+ * para garantizar la compatibilidad con el módulo de Compras de Miguel Ángel.
+ * * @author Equipo 1
  * @version 0.0.1
  */
 public class ProveedorDAO {
-    private Connection con;
 
-    public ProveedorDAO(Connection con) {
-        this.con = con;
+    private Connection con;
+    private List<Proveedor> papeleraCache;
+
+    // --- 1. Constructores ---
+
+    /**
+     * Constructor por defecto.
+     * Obtiene la conexión centralizada a la base de datos e inicializa la caché RAM para la papelera.
+     */
+    public ProveedorDAO() {
+        this.con = ConexionBD.getConnection();
+        this.papeleraCache = new ArrayList<>();
     }
 
     /**
+     * Constructor con inyección de dependencias.
+     * Permite que otros DAOs (como PedidosCompraDAO) pasen su propia conexión activa.
+     * Evita abrir múltiples conexiones simultáneas y previene problemas de concurrencia.
+     * * @param con Conexión activa a la base de datos MySQL.
+     */
+    public ProveedorDAO(Connection con) {
+        this.con = con;
+        this.papeleraCache = new ArrayList<>();
+    }
+
+    // --- 2. Métodos de Acceso a Datos (CRUD) ---
+
+    /**
      * Inserta un nuevo proveedor en la base de datos.
-     * Utiliza consultas parametrizadas para evitar vulnerabilidades de Inyección
-     * SQL.
-     * 
-     * @param p El objeto Proveedor con los datos que queremos insertar.
-     * @return true si la inserción fue correcta (1 o más filas afectadas), false en
-     *         caso de error.
+     * Utiliza consultas preparadas (PreparedStatement) para evitar ataques de inyección SQL.
+     * * @param p Objeto Proveedor con la información a insertar (sin ID).
+     * @return true si la inserción fue exitosa y afectó al menos a una fila, false si hubo error.
      */
     public boolean insertar(Proveedor p) {
-        // Preparamos la consulta SQL con '?' como marcadores de posición para los
-        // valores.
-        // No pasamos el ID porque la base de datos lo genera automáticamente (Auto
-        // Incremental).
-        String sql = "INSERT INTO proveedores (cif, nombre, telefono, email_contacto) VALUES (?, ?, ?, ?)";
-
-        // Bloque try-with-resources: asegura que la conexión y el PreparedStatement
-        // se cierren automáticamente al terminar, evitando fugas de memoria (memory
-        // leaks).
-        try (Connection conn = ConexionBD.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            // Sustituimos los marcadores '?' por los valores reales del objeto Proveedor
-            pstmt.setString(1, p.getCif());
-            pstmt.setString(2, p.getNombre());
-            pstmt.setString(3, p.getTelefono());
-            pstmt.setString(4, p.getEmailContacto());
-
-            // Ejecutamos la consulta. Si executeUpdate() devuelve > 0, significa que
-            // la fila se ha guardado correctamente en la tabla.
-            return pstmt.executeUpdate() > 0;
-
+        String sql = "INSERT INTO proveedores_maquinas (nombre, contacto, telefono, email, direccion) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, p.getNombre());
+            ps.setString(2, p.getContacto());
+            ps.setString(3, p.getTelefono());
+            ps.setString(4, p.getEmail());
+            ps.setString(5, p.getDireccion());
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            // Si hay un error (ej. CIF duplicado o base de datos apagada), lo capturamos
             System.err.println("Error al insertar proveedor: " + e.getMessage());
             return false;
         }
     }
 
     /**
-     * Recupera todos los proveedores registrados en la base de datos.
-     * Convierte cada registro (fila) de la tabla en un objeto de la clase
-     * Proveedor.
-     * 
-     * @return Una lista (List) de objetos Proveedor. Si no hay datos, devuelve una
-     *         lista vacía.
+     * Extrae todos los proveedores registrados en la base de datos.
+     * * @return Una lista (List) de objetos Proveedor. Devuelve una lista vacía si no hay registros o hay error.
      */
     public List<Proveedor> listarTodos() {
-        // Instanciamos la lista donde almacenaremos los resultados
-        List<Proveedor> listaProveedores = new ArrayList<>();
-
-        // Consulta SQL básica para obtener todas las columnas de todos los proveedores
-        String sql = "SELECT * FROM proveedores";
-
-        // Usamos try-with-resources anidando la creación del Statement y la ejecución
-        // del ResultSet
-        try (Connection conn = ConexionBD.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) { // El ResultSet contiene la "tabla" devuelta por la BD
-
-            // Recorremos el ResultSet iterando fila por fila mientras existan resultados
+        List<Proveedor> lista = new ArrayList<>();
+        String sql = "SELECT * FROM proveedores_maquinas";
+        try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
-                // Instanciamos un nuevo objeto Proveedor mapeando las columnas de la BD a los
-                // atributos de la clase
-                Proveedor p = new Proveedor(
+                lista.add(new Proveedor(
                         rs.getInt("id_proveedor"),
-                        rs.getString("cif"),
                         rs.getString("nombre"),
+                        rs.getString("contacto"),
                         rs.getString("telefono"),
-                        rs.getString("email_contacto"));
-
-                // Añadimos el proveedor recién mapeado a nuestra lista
-                listaProveedores.add(p);
+                        rs.getString("email"),
+                        rs.getString("direccion")
+                ));
             }
-
         } catch (SQLException e) {
-            // Capturamos cualquier error de lectura o conexión
             System.err.println("Error al listar proveedores: " + e.getMessage());
         }
-
-        // Retornamos la lista final (lista con datos o vacía si falló)
-        return listaProveedores;
+        return lista;
     }
 
+    /**
+     * Busca un proveedor concreto utilizando su clave primaria.
+     * Método indispensable para la construcción de objetos compuestos, como Pedidos de Compra.
+     * * @param id El identificador único del proveedor en la base de datos.
+     * @return El objeto Proveedor si la búsqueda es exitosa, o null si no se encuentra coincidencia.
+     */
     public Proveedor buscarPorId(int id) {
-        Proveedor proveedor = null;
         String sql = "SELECT * FROM proveedores_maquinas WHERE id_proveedor = ?";
-
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new Proveedor(
                             rs.getInt("id_proveedor"),
-                            rs.getString("nombre"), // Coincide
-                            rs.getString("contacto"), // Antes tenías "dni", cámbialo a "contacto"
-                            rs.getString("telefono"), // Coincide
-                            rs.getString("email"), // Coincide
-                            rs.getString("direccion") // Añadido (según tu imagen)
+                            rs.getString("nombre"),
+                            rs.getString("contacto"),
+                            rs.getString("telefono"),
+                            rs.getString("email"),
+                            rs.getString("direccion")
                     );
                 }
             }
         } catch (SQLException e) {
             System.err.println("Error al buscar proveedor: " + e.getMessage());
         }
-        return proveedor;
+        return null;
+    }
+
+    // --- 3. Métodos del Sistema de Caché (Papelera) ---
+
+    /**
+     * Borra un proveedor de la tabla física pero guarda una copia de seguridad en memoria (RAM).
+     * Protege contra el borrado accidental por parte del usuario.
+     * * @param id El identificador del proveedor a eliminar.
+     * @return true si se encontró, se borró en MySQL y se respaldó con éxito. false si hubo error.
+     */
+    public boolean eliminarConRespaldo(int id) {
+        Proveedor p = buscarPorId(id);
+        if (p != null) {
+            String sql = "DELETE FROM proveedores_maquinas WHERE id_proveedor = ?";
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setInt(1, id);
+                if (ps.executeUpdate() > 0) {
+                    papeleraCache.add(p);
+                    System.out.println("[INFO] Proveedor movido a la papelera temporal.");
+                    return true;
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al borrar proveedor: " + e.getMessage());
+            }
+        } else {
+            System.out.println("[AVISO] No se encontró ningún proveedor con ID: " + id);
+        }
+        return false;
+    }
+
+    /**
+     * Saca el último proveedor almacenado en la caché RAM y vuelve a registrarlo en MySQL.
+     * Restaura los datos siguiendo una pila LIFO (último en borrar, primero en recuperar).
+     * * @return true si la recuperación en base de datos funcionó. false si la papelera estaba vacía.
+     */
+    public boolean restaurarUltimoBorrado() {
+        if (papeleraCache.isEmpty()) {
+            System.out.println("[AVISO] La papelera de proveedores está vacía.");
+            return false;
+        }
+        Proveedor p = papeleraCache.remove(papeleraCache.size() - 1);
+        boolean exito = insertar(p);
+        
+        if (exito) {
+            System.out.println("[OK] Proveedor restaurado con éxito en la Base de Datos.");
+        }
+        return exito;
+    }
+
+    /**
+     * Imprime por consola el número de proveedores que se encuentran retenidos temporalmente en la caché.
+     */
+    public void verEstadoPapelera() {
+        System.out.println("[Papelera Proveedores: " + papeleraCache.size() + " elementos]");
     }
 }
