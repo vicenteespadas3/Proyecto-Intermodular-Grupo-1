@@ -13,31 +13,18 @@ import DAO.PedidosDetalleDAO;
 
 /**
  * <h2>Clase PedidosCompra</h2>
-<<<<<<< HEAD
- * Representa los Pedidos de Compra de piezas para la maquinaria
- * Esta clase se relaciona con la tabla pedidos_compra de la base de datos
- * Esta clase se compone de los siguientes atributos:
- * <ul>
- * <li>id_pedido</li>
- * <li>fecha_pedido</li>
- * <li>proveedor</li>
- * <li>estado</li>
- * <li>fecha_entrega_esperada</li>
- * <li>fecha_entrega_real</li>
- * <li>observaciones</li>
- * </ul>
+ * Representa los Pedidos de Compra de piezas para la maquinaria.
+ * Esta clase se relaciona con la tabla pedidos_compra de la base de datos.
  * 
- * @see PedidosDetalleDAO
- * @author Miguel Angel Sanchez Martinez
-=======
  * <b>¿Por que se ha modificado/arreglado?</b><br>
  * Esta clase representa la cabecera de un pedido de compra al proveedor.
  * Se han corregido los tipos de datos de fecha (de DateTime a LocalDateTime) y se ha 
  * vinculado correctamente con la clase 'Proveedor' de Vicente y la clase 'Definiciones' 
  * para el estado del pedido. Sin estos cambios, el proyecto no compilaba por tipos 
  * de datos incompatibles.
- * * @author Miguel Angel
->>>>>>> 7a2d9ffd760b2b1bd68800cc929c95e4f50be022
+ * 
+ * @see PedidosDetalleDAO
+ * @author Miguel Angel Sanchez Martinez
  * @version 0.0.1
  */
 public class PedidosCompra {
