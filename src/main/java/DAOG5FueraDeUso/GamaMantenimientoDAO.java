@@ -14,7 +14,7 @@ import java.util.List;
 import ModeloG5FueraDeUso.GamaMantenimiento;
 import PckConexionBD.ConexionBD;
 /**
- *
+ *Clase fuera de uso
  * @author Eric
  */
 public class GamaMantenimientoDAO {

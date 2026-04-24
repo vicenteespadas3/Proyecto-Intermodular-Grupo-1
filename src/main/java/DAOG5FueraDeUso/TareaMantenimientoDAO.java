@@ -12,8 +12,8 @@ import ModeloG5FueraDeUso.PlanMantenimiento;
 import PckConexionBD.ConexionBD;
 
 /**
- *
- * @author Eric
+ *Clase fuera de uso
+ * @author Usuario
  */
 public class TareaMantenimientoDAO {
 // --- 1. LEER DATOS (SELECT) ---

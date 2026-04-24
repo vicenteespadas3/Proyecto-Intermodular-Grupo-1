@@ -1,10 +1,10 @@
 package Modelo;
 
 /**
- * Clase Definiciones
- * Esta clase sirve para gestionar todos los estados y clasificaciones del sistema.
- * Se hizo para que módulos como el de 'Compras' puedan usar etiquetas como 
- * "Pendiente", "Enviado" o "Cancelado" de forma organizada.
+ * <h2>Clase Definiciones</h2>
+ * Proporciona un sistema de gestión de catálogos y estados dinámicos.
+ * Esta clase centraliza las clasificaciones (como estados de compra, tipos de prioridad o categorías)
+ * para que puedan ser reutilizadas por distintos módulos del sistema sin necesidad de hardcoding.
  * * @see DAO.DefinicionesDAO
  * @author Guadalupe M.G.M (Equipo 1)
  * @version 1.0.0
@@ -12,7 +12,6 @@ package Modelo;
  */
 public class Definiciones {
 
-    // Atributos de la clase
     private int idDefinicion;
     private String nombre;
     private String categoria;
@@ -24,22 +23,22 @@ public class Definiciones {
 
     /**
      * Constructor por defecto.
-     * Lo uso para crear el objeto básico y luego ir llenando los datos.
+     * Permite la creación de una instancia vacía para ser poblada posteriormente 
+     * por el DAO o mediante métodos de acceso.
      */
     public Definiciones() {
     }
 
     /**
-     * Constructor completo.
-     * Lo uso para crear una definición con todas sus propiedades de un solo golpe.
-     * * @param idDefinicion El ID único de la base de datos.
-     * @param nombre       Nombre de la etiqueta.
-     * @param categoria    Categoría a la que pertenece (ej. "PEDIDOS").
-     * @param codigo       Código corto de identificación.
-     * @param descripcion  Texto explicativo de la definición.
-     * @param ordenVisual  Posición en la que debe aparecer en las listas.
-     * @param activo       Si está disponible para usarse o no.
-     * @param estado       El valor del estado actual.
+     * Constructor completo para inicializar una definición con todos sus parámetros.
+     * * @param idDefinicion Identificador único en la base de datos.
+     * @param nombre       Etiqueta descriptiva (ej. "Enviado").
+     * @param categoria    Grupo al que pertenece (ej. "ORDENES_COMPRA").
+     * @param codigo       Abreviatura técnica para lógica interna (ej. "ENV").
+     * @param descripcion  Detalle extendido sobre el propósito de esta definición.
+     * @param ordenVisual  Prioridad de aparición en componentes de interfaz (combos/listas).
+     * @param activo       Indica si el registro es funcional en el sistema actual.
+     * @param estado       Representación del valor de estado actual.
      */
     public Definiciones(int idDefinicion, String nombre, String categoria, String codigo, 
                         String descripcion, int ordenVisual, boolean activo, String estado) {
@@ -54,18 +53,20 @@ public class Definiciones {
     }
 
     // ==========================================
-    // LÓGICA DE LA DEFINICIÓN
+    // LÓGICA DE NEGOCIO
     // ==========================================
 
     /**
-     * Para saber si esta definición se puede usar o está pausada.
+     * Verifica la disponibilidad operativa de la definición.
+     * * @return {@code true} si la definición está marcada como activa; {@code false} en caso contrario.
      */
     public boolean estaDisponible() {
         return activo;
     }
 
     /**
-     * Un método rápido para cambiar el estado sin líos.
+     * Actualiza de forma directa el estado asociado a esta definición.
+     * * @param nuevoEstado Cadena de texto con el nuevo valor de estado.
      */
     public void cambiarEstado(String nuevoEstado) {
         this.estado = nuevoEstado;
@@ -75,72 +76,49 @@ public class Definiciones {
     // GETTERS Y SETTERS
     // ==========================================
 
-    public int getIdDefinicion() {
-        return idDefinicion;
-    }
+    /** @return ID único de la definición. */
+    public int getIdDefinicion() { return idDefinicion; }
+    /** @param idDefinicion ID a establecer. */
+    public void setIdDefinicion(int idDefinicion) { this.idDefinicion = idDefinicion; }
 
-    public void setIdDefinicion(int idDefinicion) {
-        this.idDefinicion = idDefinicion;
-    }
+    /** @return Nombre de la etiqueta. */
+    public String getNombre() { return nombre; }
+    /** @param nombre Nombre a asignar. */
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getNombre() {
-        return nombre;
-    }
+    /** @return Categoría del catálogo. */
+    public String getCategoria() { return categoria; }
+    /** @param categoria Categoría a asignar. */
+    public void setCategoria(String categoria) { this.categoria = categoria; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    /** @return Código corto de identificación. */
+    public String getCodigo() { return codigo; }
+    /** @param codigo Código a asignar. */
+    public void setCodigo(String codigo) { this.codigo = codigo; }
 
-    public String getCategoria() {
-        return categoria;
-    }
+    /** @return Descripción detallada. */
+    public String getDescripcion() { return descripcion; }
+    /** @param descripcion Texto descriptivo a establecer. */
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
+    /** @return Posición en el orden de visualización. */
+    public int getOrdenVisual() { return ordenVisual; }
+    /** @param ordenVisual Índice de posición a establecer. */
+    public void setOrdenVisual(int ordenVisual) { this.ordenVisual = ordenVisual; }
 
-    public String getCodigo() {
-        return codigo;
-    }
+    /** @return {@code true} si el registro está activo. */
+    public boolean isActivo() { return activo; }
+    /** @param activo Estado de actividad a establecer. */
+    public void setActivo(boolean activo) { this.activo = activo; }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public int getOrdenVisual() {
-        return ordenVisual;
-    }
-
-    public void setOrdenVisual(int ordenVisual) {
-        this.ordenVisual = ordenVisual;
-    }
-
-    public boolean isActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+    /** @return El estado actual de la definición. */
+    public String getEstado() { return estado; }
+    /** @param estado Estado a asignar. */
+    public void setEstado(String estado) { this.estado = estado; }
 
     /**
-     * Método para mostrar la información principal en consola o en listas.
+     * Genera una representación legible del estado para el usuario final.
+     * * @return Nombre seguido del estado entre paréntesis.
      */
     @Override
     public String toString() {

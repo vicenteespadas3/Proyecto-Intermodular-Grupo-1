@@ -4,16 +4,17 @@ import java.time.LocalTime;
 import java.time.Duration;
 
 /**
- * Clase HorarioTrabajo
- * Esta clase es para saber en qué horario trabaja cada usuario del taller.
- * Sirve para organizar los turnos y ver quién está disponible para 
- * hacer los mantenimientos según el día y la hora.
+ * <h2>Clase HorarioTrabajo</h2>
+ * Modela la jornada laboral de un trabajador en el taller.
+ * Permite gestionar la asignación de turnos, verificar la disponibilidad para mantenimientos
+ * y realizar cálculos de duración de jornada.
  * * @see DAO.HorarioTrabajoDAO
  * @author Guadalupe M.G.M
+ * @version 1.0.0
+ * @since 2026
  */
 public class HorarioTrabajo {
 
-    // Datos que necesito para los turnos
     private int idHorario;
     private int idUsuario;
     private String diaSemana;
@@ -21,14 +22,19 @@ public class HorarioTrabajo {
     private LocalTime horaFin;
 
     /**
-     * Constructor vacío.
-     * Lo uso cuando el DAO va a llenar los datos poco a poco.
+     * Constructor por defecto.
+     * Útil para la instanciación dinámica y el llenado progresivo de atributos 
+     * mediante métodos setter.
      */
     public HorarioTrabajo() {}
 
     /**
-     * Constructor con todo.
-     * Lo uso para crear un turno completo de una vez con todos sus datos.
+     * Constructor completo para inicializar todos los atributos de la jornada.
+     * * @param idHorario Identificador único del registro de horario.
+     * @param idUsuario Identificador del usuario (trabajador) asociado.
+     * @param diaSemana Día de la semana (ej. "Lunes", "Martes").
+     * @param horaInicio Hora de entrada al turno.
+     * @param horaFin Hora de salida del turno.
      */
     public HorarioTrabajo(int idHorario, int idUsuario, String diaSemana,
                             LocalTime horaInicio, LocalTime horaFin) {
@@ -40,12 +46,14 @@ public class HorarioTrabajo {
     }
 
     // ==========================================
-    // LÓGICA PARA CONTROLAR EL HORARIO
+    // LÓGICA DE NEGOCIO
     // ==========================================
 
     /**
-     * Para revisar que el horario tenga sentido.
-     * Checa que no falten las horas y que la de inicio sea antes que la de fin.
+     * Valida la coherencia temporal del horario.
+     * Comprueba que las horas no sean nulas y que la hora de inicio sea estrictamente 
+     * anterior a la hora de finalización.
+     * * @return {@code true} si el rango horario es lógico; {@code false} en caso contrario.
      */
     public boolean esHorarioValido() {
         return horaInicio != null
@@ -54,19 +62,20 @@ public class HorarioTrabajo {
     }
 
     /**
-     * Para saber cuántas horas dura el turno.
-     * Si el horario está mal, me devuelve 0.
+     * Calcula la cantidad total de horas transcurridas en el turno.
+     * Utiliza la clase {@link Duration} para computar la diferencia entre inicio y fin.
+     * * @return El número de horas completas del turno. Devuelve {@code 0} si el horario no es válido.
      */
     public long duracionHoras() {
         if (!esHorarioValido()) {
             return 0;
         }
-        // Uso Duration para calcular la diferencia entre las horas
         return Duration.between(horaInicio, horaFin).toHours();
     }
 
     /**
-     * Para saber si es un turno de más de 8 horas.
+     * Determina si la jornada laboral excede las 8 horas estándar.
+     * * @return {@code true} si la duración es superior a 8 horas; {@code false} de lo contrario.
      */
     public boolean esTurnoLargo() {
         return duracionHoras() > 8;
@@ -76,23 +85,35 @@ public class HorarioTrabajo {
     // GETTERS Y SETTERS
     // ==========================================
 
+    /** @return ID único del horario. */
     public int getIdHorario() { return idHorario; }
+    /** @param idHorario ID único a asignar. */
     public void setIdHorario(int idHorario) { this.idHorario = idHorario; }
 
+    /** @return ID del usuario propietario del turno. */
     public int getIdUsuario() { return idUsuario; }
+    /** @param idUsuario ID del usuario a vincular. */
     public void setIdUsuario(int idUsuario) { this.idUsuario = idUsuario; }
 
+    /** @return Día de la semana asignado. */
     public String getDiaSemana() { return diaSemana; }
+    /** @param diaSemana Nombre del día a establecer. */
     public void setDiaSemana(String diaSemana) { this.diaSemana = diaSemana; }
 
+    /** @return Objeto {@link LocalTime} con la hora de inicio. */
     public LocalTime getHoraInicio() { return horaInicio; }
+    /** @param horaInicio Hora de inicio a establecer. */
     public void setHoraInicio(LocalTime horaInicio) { this.horaInicio = horaInicio; }
 
+    /** @return Objeto {@link LocalTime} con la hora de fin. */
     public LocalTime getHoraFin() { return horaFin; }
+    /** @param horaFin Hora de finalización a establecer. */
     public void setHoraFin(LocalTime horaFin) { this.horaFin = horaFin; }
 
     /**
-     * Para mostrar el horario en un formato que se entienda fácil.
+     * Devuelve una cadena con el resumen del horario.
+     * Ejemplo: "Lunes: 08:00 - 16:00"
+     * * @return Representación textual del horario.
      */
     @Override
     public String toString() {

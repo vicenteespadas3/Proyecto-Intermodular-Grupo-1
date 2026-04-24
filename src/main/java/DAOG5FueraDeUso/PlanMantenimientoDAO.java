@@ -14,6 +14,12 @@ import ModeloG5FueraDeUso.GamaMantenimiento;
 //import modelo.Definicion;
 import PckConexionBD.ConexionBD;
 
+/**
+ *Clase fuera de uso
+ * @author Usuario
+ */
+
+
 public class PlanMantenimientoDAO {
 
     // --- 1. MÉTODO PARA LEER TODOS LOS DATOS (SELECT) ---

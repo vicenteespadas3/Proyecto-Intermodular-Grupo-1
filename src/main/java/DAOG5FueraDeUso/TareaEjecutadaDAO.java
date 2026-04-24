@@ -11,7 +11,7 @@ import ModeloG5FueraDeUso.TareaEjecutada;
 import PckConexionBD.ConexionBD;
 
 /**
- *
+ *Clase fuera de uso
  * @author Usuario
  */
 
