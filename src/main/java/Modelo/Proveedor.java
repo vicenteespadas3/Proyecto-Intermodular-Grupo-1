@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
 
 /**
@@ -9,16 +5,27 @@ package Modelo;
  * Representa la entidad de un proveedor, empresa o persona física que suministra
  * maquinaria, activos o piezas de repuesto al taller.
  * Esta clase mapea de forma exacta la estructura de la tabla 'proveedores_maquinas' de MySQL.
- * * @author Vicente
+ * * @author Equipo 1
  * @version 0.0.1
  */
 public class Proveedor {
 
+    /** Identificador numérico único del proveedor (int, PK). */
     private int idProveedor;
+    
+    /** Nombre fiscal o comercial de la empresa proveedora (varchar 200). */
     private String nombre;
+    
+    /** Nombre de la persona física de referencia o comercial (varchar 150). */
     private String contacto;
+    
+    /** Número de teléfono de contacto (varchar 20). */
     private String telefono;
+    
+    /** Correo electrónico principal del proveedor (varchar 200). */
     private String email;
+    
+    /** Ubicación física, calle o sede de la empresa (varchar 300). */
     private String direccion;
 
     // --- 1. Constructor Vacío ---

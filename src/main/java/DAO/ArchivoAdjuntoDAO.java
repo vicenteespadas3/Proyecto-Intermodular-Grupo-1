@@ -8,15 +8,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import Modelo.ArchivoAdjunto;
-import Modelo.Maquina;
 import PckConexionBD.ConexionBD;
 
 /**
  * <h2>Clase ArchivoAdjuntoDAO</h2>
- * Gestiona la persistencia (CRUD) de los documentos y manuales del taller.
- * Implementa un sistema de papelera en memoria RAM (Caché) para evitar 
- * la pérdida accidental de archivos importantes.
- * * @author Vicente
+ * Gestiona la persistencia (CRUD) de la tabla polimórfica 'archivos_adjuntos'.
+ * Implementa caché en memoria RAM para deshacer borrados accidentales.
+ * * @author Equipo 1
  * @version 0.0.1
  */
 public class ArchivoAdjuntoDAO {
@@ -37,8 +35,8 @@ public class ArchivoAdjuntoDAO {
 
     /**
      * Constructor con inyección de dependencias.
-     * Permite usar una conexión ya abierta por otro módulo para mantener la atomicidad de las transacciones.
-     * @param con Conexión activa a la base de datos MySQL.
+     * Mantiene la atomicidad de transacciones si es llamado desde otros módulos.
+     * @param con Conexión activa a MySQL.
      */
     public ArchivoAdjuntoDAO(Connection con) {
         this.con = con;
@@ -48,18 +46,19 @@ public class ArchivoAdjuntoDAO {
     // --- 2. Métodos de Acceso a Datos (CRUD) ---
 
     /**
-     * Inserta el registro de un nuevo archivo adjunto en la base de datos.
-     * * @param a Objeto ArchivoAdjunto con los datos del documento a guardar.
-     * @return true si la inserción fue exitosa, false en caso de error SQL.
+     * Inserta un nuevo registro de archivo adjunto.
+     * * @param a Objeto ArchivoAdjunto con los datos.
+     * @return true si la inserción fue exitosa, false si falló.
      */
     public boolean insertar(ArchivoAdjunto a) {
-        String sql = "INSERT INTO archivos_adjuntos (id_maquina, nombre_archivo, extension, ruta_local, fecha_subida) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO archivos_adjuntos (tipo_referencia, id_referencia, nombre_archivo, ruta_archivo, fecha_subida, id_usuario_subida) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, a.getMaquina().getIdMaquina());
-            ps.setString(2, a.getNombreArchivo());
-            ps.setString(3, a.getExtension());
-            ps.setString(4, a.getRutaLocal());
-            ps.setDate(5, new java.sql.Date(a.getFechaSubida().getTime()));
+            ps.setString(1, a.getTipoReferencia());
+            ps.setInt(2, a.getIdReferencia());
+            ps.setString(3, a.getNombreArchivo());
+            ps.setString(4, a.getRutaArchivo());
+            ps.setTimestamp(5, new java.sql.Timestamp(a.getFechaSubida().getTime()));
+            ps.setInt(6, a.getIdUsuarioSubida());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error al insertar archivo: " + e.getMessage());
@@ -69,24 +68,23 @@ public class ArchivoAdjuntoDAO {
 
     /**
      * Recupera el listado completo de todos los documentos registrados.
-     * Realiza un JOIN con la tabla de máquinas para obtener el número de serie al que pertenece cada archivo.
-     * * @return Una lista de objetos ArchivoAdjunto. Devuelve lista vacía si no hay registros.
+     * * @return Lista de objetos ArchivoAdjunto.
      */
     public List<ArchivoAdjunto> listarTodos() {
         List<ArchivoAdjunto> lista = new ArrayList<>();
-        String sql = "SELECT a.*, m.numero_serie, m.marca FROM archivos_adjuntos a JOIN maquinas m ON a.id_maquina = m.id_maquina";
+        // Consulta limpia a una sola tabla (sin JOINs que provoquen errores con columnas antiguas)
+        String sql = "SELECT * FROM archivos_adjuntos";
         
         try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
-                // Instanciamos una máquina parcial para mantener la referencia cruzada
-                Maquina m = new Maquina();
-                m.setIdMaquina(rs.getInt("id_maquina"));
-                m.setNumeroSerie(rs.getString("numero_serie"));
-                m.setMarca(rs.getString("marca"));
-
                 lista.add(new ArchivoAdjunto(
-                        rs.getInt("id_archivo"), m, rs.getString("nombre_archivo"),
-                        rs.getString("extension"), rs.getString("ruta_local"), rs.getDate("fecha_subida")
+                        rs.getInt("id_archivo"),
+                        rs.getString("tipo_referencia"),
+                        rs.getInt("id_referencia"),
+                        rs.getString("nombre_archivo"),
+                        rs.getString("ruta_archivo"),
+                        rs.getTimestamp("fecha_subida"),
+                        rs.getInt("id_usuario_subida")
                 ));
             }
         } catch (SQLException e) {
@@ -96,26 +94,25 @@ public class ArchivoAdjuntoDAO {
     }
 
     /**
-     * Busca un documento específico utilizando su identificador único.
-     * Útil para operaciones de descarga o visualización de un archivo concreto.
-     * * @param id Identificador numérico del archivo adjunto.
-     * @return El objeto ArchivoAdjunto si se encuentra, o null en caso contrario.
+     * Busca un documento específico utilizando su clave primaria (id_archivo).
+     * * @param id Identificador numérico del archivo.
+     * @return Objeto ArchivoAdjunto si se encuentra, o null en caso contrario.
      */
     public ArchivoAdjunto buscarPorId(int id) {
-        String sql = "SELECT a.*, m.numero_serie, m.marca FROM archivos_adjuntos a JOIN maquinas m ON a.id_maquina = m.id_maquina WHERE a.id_archivo = ?";
+        String sql = "SELECT * FROM archivos_adjuntos WHERE id_archivo = ?";
         
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    Maquina m = new Maquina();
-                    m.setIdMaquina(rs.getInt("id_maquina"));
-                    m.setNumeroSerie(rs.getString("numero_serie"));
-                    m.setMarca(rs.getString("marca"));
-
                     return new ArchivoAdjunto(
-                            rs.getInt("id_archivo"), m, rs.getString("nombre_archivo"),
-                            rs.getString("extension"), rs.getString("ruta_local"), rs.getDate("fecha_subida")
+                            rs.getInt("id_archivo"),
+                            rs.getString("tipo_referencia"),
+                            rs.getInt("id_referencia"),
+                            rs.getString("nombre_archivo"),
+                            rs.getString("ruta_archivo"),
+                            rs.getTimestamp("fecha_subida"),
+                            rs.getInt("id_usuario_subida")
                     );
                 }
             }
@@ -128,10 +125,9 @@ public class ArchivoAdjuntoDAO {
     // --- 3. Métodos del Sistema de Caché (Papelera) ---
 
     /**
-     * Borra un archivo de la base de datos de forma lógica guardándolo en una lista de memoria RAM.
-     * Permite deshacer el borrado si fue accidental.
-     * * @param id El identificador del archivo a eliminar.
-     * @return true si el archivo se eliminó de MySQL y se respaldó correctamente en RAM. false si falló.
+     * Borra un archivo lógicamente de MySQL y lo respalda en RAM.
+     * * @param id Identificador del archivo a eliminar.
+     * @return true si se borró y respaldó correctamente.
      */
     public boolean eliminarConRespaldo(int id) {
         ArchivoAdjunto a = buscarPorId(id);
@@ -154,16 +150,14 @@ public class ArchivoAdjuntoDAO {
     }
 
     /**
-     * Restaura el último archivo eliminado de la papelera en RAM (Sistema LIFO).
-     * Vuelve a insertar los datos del documento en la base de datos.
-     * * @return true si la recuperación en MySQL fue exitosa. false si la papelera estaba vacía.
+     * Restaura el último archivo eliminado de la papelera en RAM (LIFO).
+     * * @return true si la recuperación en MySQL fue exitosa.
      */
     public boolean restaurarUltimo() {
         if (papeleraCache.isEmpty()) {
             System.out.println("[AVISO] La papelera de documentos está vacía.");
             return false;
         }
-        // Extraemos el último elemento borrado
         ArchivoAdjunto a = papeleraCache.remove(papeleraCache.size() - 1);
         boolean exito = insertar(a);
         
@@ -174,7 +168,7 @@ public class ArchivoAdjuntoDAO {
     }
 
     /**
-     * Imprime por consola cuántos documentos se encuentran retenidos actualmente en la caché de recuperación.
+     * Imprime el estado actual de la papelera en memoria.
      */
     public void verEstadoPapelera() {
         System.out.println("[Papelera Archivos: " + papeleraCache.size() + " documentos]");
